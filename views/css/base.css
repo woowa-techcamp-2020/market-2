@@ -11,8 +11,10 @@ body {
   height: 100%;
   border: 1px solid #000;
   box-sizing: border-box;
-  padding: 30px 0;
-  position: relative;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 header {
@@ -22,13 +24,11 @@ header {
 
 footer {
   width: 100%;
-  position: absolute;
-  bottom: 0;
   text-align: center;
 }
 
 .content {
-  overflow: auto;
+  height: 100%;
 }
 
 .base_color {
