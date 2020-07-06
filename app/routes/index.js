@@ -12,7 +12,6 @@ fs.readdirSync(routesPath).filter((file) => {
 });
 
 router.get("/", (req, res) => {
-  console.log("here render");
   res.render("index");
 });
 
