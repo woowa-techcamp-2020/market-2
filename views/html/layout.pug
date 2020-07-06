@@ -1,0 +1,13 @@
+doctype html
+html(lang='en')
+  head
+    title 배민상회
+    meta(charset='utf-8')
+    link(rel='stylesheet' href='./css/base.css')
+  body
+    div.layout
+      include ./header.pug
+      div.content
+        block content
+      include ./footer.pug
+      
