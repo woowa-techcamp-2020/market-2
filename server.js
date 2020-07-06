@@ -28,11 +28,11 @@ app.use(
 app.use(cors());
 app.use(helmet());
 app.use(compression());
-app.use(express.static("public"));
+app.use(express.static("views"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(require("./app/routes"));
-app.listen(app.get("ponrt"));
+app.listen(app.get("port"));
 
 module.exports = app;
 
