@@ -12,7 +12,6 @@ fs.readdirSync(routesPath).filter((file) => {
 });
 
 router.get("/", (req, res) => {
-  console.log("here render");
   res.render("index");
 });
 
@@ -29,14 +28,6 @@ router.get("/register", (req, res) => {
 router.get("/register_comp", (req, res) => {
   console.log("here render");
   res.render("html/page/register_comp");
-});
-
-router.use("*", (req, res) => {
-  res.status(404).json({
-    errors: {
-      msg: "URL_NOT_FOUND",
-    },
-  });
 });
 
 module.exports = router;
