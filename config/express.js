@@ -7,11 +7,12 @@ const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
 const routes = require("../app/routes");
+const logger = require("./logger");
 const { logs } = require("./vars");
 const error = require("../app/middleware/error");
 const app = express();
 
-app.use(morgan(logs));
+app.use(morgan(logs, { stream: logger.stream }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride());
