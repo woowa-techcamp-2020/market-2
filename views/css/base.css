@@ -1,0 +1,69 @@
+body {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  font-family: "Do Hyeon", sans-serif;
+}
+
+.layout {
+  margin: 0 auto;
+  width: 500px;
+  height: 100%;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+header {
+  width: 100%;
+  text-align: center;
+}
+
+footer {
+  width: 100%;
+  text-align: center;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.base_color {
+  color: #197cfe;
+}
+
+.err_color {
+  color: red;
+}
+
+.grey {
+  color: #d7d7d7;
+}
+
+input[type="text"] {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #d7d7d7;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+button {
+  width: 100%;
+  height: 60px;
+  background-color: #197cfe;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 10px;
+  border: 0;
+}
+
+.login {
+  color: red;
+}
