@@ -3,7 +3,7 @@ const expressValidation = require("express-validation");
 const { APIError } = require("./APIError");
 const { env } = require("../../config/vars");
 
-const handler = (err, req, res, next) => {
+exports.handler = (err, req, res, next) => {
   const response = {
     code: err.status,
     message: err.message || httpStatus[err.status],
@@ -18,8 +18,6 @@ const handler = (err, req, res, next) => {
   res.status(err.status);
   res.json(response);
 };
-
-exports.handler = handler;
 
 exports.converter = (err, req, res, next) => {
   let convertedError = err;
