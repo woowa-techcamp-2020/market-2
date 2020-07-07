@@ -12,11 +12,12 @@
     "http-status": "^1.4.2",
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
-    "mysql": "^2.18.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "path": "^0.12.7",
     "pug": "^3.0.0",
+    "sequelize": "^6.3.0",
+    "sqlite3": "^5.0.0",
     "trim-request": "^1.0.6",
     "winston": "^3.3.3"
   },
