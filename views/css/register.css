@@ -3,6 +3,6 @@ p {
   margin-right: 5px;
 }
 
-#emailForm {
+.emailForm {
   display: flex;
 }
