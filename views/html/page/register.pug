@@ -1,4 +1,18 @@
 extends ../layout/index
 
+block styles
+  link(rel='stylesheet' href='./css/register.css')
+
 block content
   h2 회원가입 페이지
+
+  div#emailForm 
+    input#emailIdInputBox(type="text", name="emailId", value="", placeholder="이메일 앞자리*")
+    p @ 
+    input#emailDomainInputBox(type="text", name="emailDomain", value="", placeholder="이메일 뒷자리*", disabled)
+  select#emailSelector
+    each val,idx in Emails
+      option=val
+
+block scripts
+  script(type="module" src="./js/register.js")
