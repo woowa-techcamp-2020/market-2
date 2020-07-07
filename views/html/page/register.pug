@@ -6,13 +6,34 @@ block styles
 block content
   h2 회원가입 페이지
 
-  div#emailForm 
+  .emailForm
     input#emailIdInputBox(type="text", name="emailId", value="", placeholder="이메일 앞자리*")
     p @ 
     input#emailDomainInputBox(type="text", name="emailDomain", value="", placeholder="이메일 뒷자리*", disabled)
   select#emailSelector
-    each val,idx in Emails
+    each val in Emails
       option=val
+  
+  .inputCheckBox
+    input#addressCheckBox(type="checkbox")
+    label.agreeText(for="addressCheckBox") 선택 정보를 입력하시겠어요?
+    label.linkText 내용보기
+  
+  .addressForm
+    input.addressElements(type="text", value="",placeholder="우편번호", disabled)
+    input.addressElements(type="text", value="",placeholder="우편번호", disabled)
+
+  .agreement
+    input#parentAgreement(type="checkbox") 
+    label.parentAgreeText(for="parentAgreement") 전체 약관에 동의합니다
+    div#subAgreementGroup
+      .subAgreement
+        input.subAgreementCheckBox#mustAgree(type="checkbox")
+        label.subAgreeText(for="mustAgree") 필수 항목에 동의합니다.
+      .subAgreement
+        input.subAgreementCheckBox#adAgree(type="checkbox")
+        label.subAgreeText(for="adAgree") 광고성 정보 수신 동의 (선택)
+
 
 block scripts
   script(type="module" src="./js/register.js")
