@@ -1,0 +1,14 @@
+.right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.right p {
+  margin: 0 5px;
+  color: #9c9c9c;
+  font-size: 14px;
+}
+
+.click {
+  cursor: pointer;
+}
