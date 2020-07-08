@@ -135,10 +135,19 @@ const showFindAddress = () => {
   });
 })();
 
+const registerActioins = () => {
+  // document.myForm.action = "/register_comp.pug";
+  // document.myForm.method = "post";
+  // document.myForm.submit();
+
+  location.href = "/register_comp";
+};
+
 (function agreementGroupChangeEvent() {
   const parentAgreement = document.querySelector("#parentAgreement");
   const subAgreementGroup = document.querySelector("#subAgreementGroup");
   const subAgreements = document.querySelectorAll(".subAgreementCheckBox");
+  const registerBtn = document.querySelector("#register");
   if (!(parentAgreement || subAgreementGroup || subAgreements.length)) return;
 
   parentAgreement.addEventListener("click", () => {
@@ -159,4 +168,6 @@ const showFindAddress = () => {
       parentAgreement.checked = false;
     }
   });
+
+  registerBtn.addEventListener("click", registerActioins);
 })();
