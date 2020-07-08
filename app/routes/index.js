@@ -20,4 +20,8 @@ router.get("/register_comp", (req, res) => {
   res.render("html/page/register_comp");
 });
 
+router.get("/not_found", (req, res) => {
+  res.render("html/page/not_found");
+});
+
 module.exports = router;

@@ -23,6 +23,10 @@ app.use(express.static("views"));
 app.set("../views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use(routes);
+app.use((req, res, next) => {
+  // 404 처리 부분
+  res.status(404).redirect("/not_found");
+});
 app.use(error.converter);
 app.use(error.notFound);
 app.use(error.handler);
