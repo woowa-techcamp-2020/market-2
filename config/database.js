@@ -1,7 +1,7 @@
-const Sequelize = require("sequelize");
-const path = require("path");
+import * as Sequelize from "sequelize";
+import * as path from "path";
 
-const connection = require("./connection");
+import * as connection from "./connection";
 
 let database;
 

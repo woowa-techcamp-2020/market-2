@@ -1,6 +1,6 @@
-const fs = require("fs");
-const modelsPath = `${__dirname}/`;
-const { removeExtensionFromFile } = require("../middleware/utils");
+import * as fs from "fs";
+import * as modelsPath from `${__dirname}/`;
+import { removeExtensionFromFile } from "../middleware/utils";
 
 module.exports = () => {
   fs.readdirSync(modelsPath).filter((file) => {

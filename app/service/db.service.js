@@ -1,5 +1,5 @@
-const database = require("../../config/database");
-const logger = require("../../config/logger");
+import * as database from "../../config/database";
+import * as logger from "../../config/logger";
 
 const dbService = (environment, migrate) => {
   const authenticateDB = () => database.authenticate();
