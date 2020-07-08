@@ -1,4 +1,3 @@
-import { inputErrEvent } from "./input.js";
 const goPageActions = (url) => {
   location.href = url;
   console.log("go page" + url);
@@ -37,9 +36,11 @@ const loginActions = () => {
 
 const loadIdActions = () => {
   const id = document.querySelector("#id");
+  const save_checkbox = document.querySelector("#id_save");
   const saveId = localStorage.getItem("save_id");
   if (saveId) {
     id.value = saveId;
+    save_checkbox.checked = true;
   }
 };
 
