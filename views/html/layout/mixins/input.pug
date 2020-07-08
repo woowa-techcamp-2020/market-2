@@ -1,12 +1,17 @@
 // 인자값은 순서대로 - 타입, 최소길이, 최대길이, 이름, placeholder text
-mixin inputText(type= 'text',name= '',place= '',min= 0,max= 100)
-    div
+mixin inputText(type= 'text',name= '',place= '',className= '',required = false,disabled= false,readOnly= false,min= 0,max= 100)
+    .input_layer
         input.input(
             type= type
             minlength= min
             maxlength= max
             name= name
+            id= name
+            class= className
             placeholder= place
+            required= required
+            disabled= disabled
+            readOnly= readOnly
         )
         p.input_msg
             
