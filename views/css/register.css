@@ -6,3 +6,19 @@ p {
 .emailForm {
   display: flex;
 }
+
+.inputCheckBox {
+  margin-bottom: 20px;
+}
+
+.linkText {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: -0.1px;
+  color: #898989;
+  font-weight: normal;
+  position: relative;
+  margin-left: 9px;
+  text-decoration: underline;
+  cursor: pointer;
+}

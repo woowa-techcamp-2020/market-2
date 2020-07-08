@@ -4,7 +4,7 @@ block styles
   link(rel='stylesheet' href='./css/register.css')
 
 block content
-  h2 회원가입 페이지
+  h4 필수 정보를 입력해 주세요.
 
   .emailForm
     input#emailIdInputBox(type="text", name="emailId", value="", placeholder="이메일 앞자리*")
@@ -17,11 +17,17 @@ block content
   .inputCheckBox
     input#addressCheckBox(type="checkbox")
     label.agreeText(for="addressCheckBox") 선택 정보를 입력하시겠어요?
-    label.linkText 내용보기
+    span
+      a(href="https://ceo.baemin.com/#/policy/history?position=collectionAndUsageNormal" target="_blank").linkText 내용보기
   
   .addressForm
-    input.addressElements(type="text", value="",placeholder="우편번호", disabled)
-    input.addressElements(type="text", value="",placeholder="우편번호", disabled)
+    //- input.addressElements(type="text", value="",placeholder="우편번호", disabled, readOnly)
+    //- input.addressElements(type="text", value="",placeholder="우편번호", disabled, readOnly)
+    .row
+      +inputText('text','postcode','우편번호','addressElements',false,true,true)
+      button.btn_small.addressElements(disabled) 주소찾기
+    +inputText('text','address','주소','addressElements',false,true,true)
+    +inputText('text','detailAddress','상세주소','addressElements',false,true,false)
 
   .agreement
     input#parentAgreement(type="checkbox") 
@@ -33,7 +39,6 @@ block content
       .subAgreement
         input.subAgreementCheckBox#adAgree(type="checkbox")
         label.subAgreeText(for="adAgree") 광고성 정보 수신 동의 (선택)
-
 
 block scripts
   script(type="module" src="./js/register.js")

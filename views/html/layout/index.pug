@@ -5,6 +5,7 @@ html(lang='en')
     meta(charset='utf-8')
     link(rel="shortcut icon", href="./images/favicon.ico", type="image/x-icon")
     link(rel='stylesheet' href='./css/base.css')
+    script(src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js")
     block styles
   body
     include ./mixins/input.pug
@@ -13,6 +14,12 @@ html(lang='en')
       div.content
         block content
       include ./footer.pug
+    .layer_out
+      .layer_in
+        .layer_header
+          h3 주소검색
+          img#btnCloseLayer(src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAAoUlEQVRYhe2WQQ6DMAwEaR/Ron4RnosUeM30QA5WhSBxbNKD5xSEnB1IHBiGIAj+HWACRkXdCEyt4TM7qUYih6dcO7cIvIAlT7QBn4Kat6hZS2rMJMzDayTcwksk3MPPJG4LFxJyh6efcXW7aiXkm2h68qfS4XFx7UfXJTjacJrDyixc3POVKGk1N4maPjeX0BwyphL0/hznyfr9kARBcAdfWXAH/8Hnf54AAAAASUVORK5CYII", alt="닫기 버튼")
+        #layer
   script(type="module" src="./js/index.js")
   script(type="module" src="./js/validation.js")
   block scripts
