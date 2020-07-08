@@ -1,7 +1,7 @@
-const httpStatus = require("http-status");
-const expressValidation = require("express-validation");
-const { APIError } = require("./APIError");
-const { env } = require("../../config/vars");
+import * as httpStatus from "http-status";
+import * as expressValidation from "express-validation";
+import { APIError } from "./APIError";
+import { env } from "../../config/vars";
 
 exports.handler = (err, req, res, next) => {
   const response = {
