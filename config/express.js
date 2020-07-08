@@ -10,6 +10,7 @@ import routes from "../app/routes";
 import logger from "./logger";
 import { logs } from "./vars";
 import error from "../app/middleware/error";
+import userRoute from "../app/routes/user.route";
 
 const app = express();
 app.use(morgan(logs, { stream: logger.stream }));
@@ -22,7 +23,8 @@ app.use(compression());
 app.use(express.static("views"));
 app.set("../views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
-app.use(routes);
+app.use("/", routes);
+app.use("/api/users", userRoute);
 app.use((req, res, next) => {
   // 404 처리 부분
   res.status(404).redirect("/not_found");
