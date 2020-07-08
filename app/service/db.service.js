@@ -1,5 +1,5 @@
-import * as database from "../../config/database";
-import * as logger from "../../config/logger";
+import database from "../../config/database";
+import logger from "../../config/logger";
 
 const dbService = (environment, migrate) => {
   const authenticateDB = () => database.authenticate();

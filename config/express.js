@@ -1,15 +1,15 @@
-import * as express from "express";
-import * as bodyParser from "body-parser";
-import * as methodOverride from "method-override";
-import * as morgan from "morgan";
-import * as compression from "compression";
-import * as helmet from "helmet";
-import * as cors from "cors";
-import * as path from "path";
-import * as routes from "../app/routes";
-import * as logger from "./logger";
+import express from "express";
+import bodyParser from "body-parser";
+import methodOverride from "method-override";
+import morgan from "morgan";
+import compression from "compression";
+import helmet from "helmet";
+import cors from "cors";
+import path from "path";
+import routes from "../app/routes";
+import logger from "./logger";
 import { logs } from "./vars";
-import * as error from "../app/middleware/error";
+import error from "../app/middleware/error";
 
 const app = express();
 app.use(morgan(logs, { stream: logger.stream }));

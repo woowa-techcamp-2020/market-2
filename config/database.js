@@ -1,7 +1,7 @@
-import * as Sequelize from "sequelize";
-import * as path from "path";
+import Sequelize from "sequelize";
+import path from "path";
 
-import * as connection from "./connection";
+import connection from "./connection";
 
 let database;
 

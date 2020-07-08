@@ -1,6 +1,6 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
 const data = require("../../public/data.json");
+const router = Router();
 
 router.get("/", (req, res) => {
   res.render("index");

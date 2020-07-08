@@ -1,5 +1,5 @@
-import * as httpStatus from "http-status";
-import * as expressValidation from "express-validation";
+import httpStatus from "http-status";
+import expressValidation from "express-validation";
 import { APIError } from "./APIError";
 import { env } from "../../config/vars";
 

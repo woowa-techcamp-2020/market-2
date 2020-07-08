@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as modelsPath from `${__dirname}/`;
+import fs from "fs";
+import modelsPath from `${__dirname}/`;
 import { removeExtensionFromFile } from "../middleware/utils";
 
 module.exports = () => {
