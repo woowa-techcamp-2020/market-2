@@ -1,4 +1,27 @@
 extends ../layout/index
 
+mixin row(item= {})
+  .row
+    span.label= item.label
+    sapn= item.value
+
+block styles
+  link(rel='stylesheet' href='./css/register_comp.css')
+
 block content
-  h2 회원가입 완료 페이지
+  .wrap
+    p.title 회원이 되셨습니다.
+    a(href="/").base_color.go_main 메인으로 &#8594;
+    .user_info
+      -
+        var list = [
+          {id: 'name', label:'이름', value: '윤지수'},
+          {id: 'id', label:'아이디', value: 'crongro'},
+          {id: 'email', label:'이메일', value: 'a@aaa.com'},
+          {id: 'phone', label:'휴대폰', value: '01012345678'}
+          ]
+      each item in list
+        +row(item)
+    .line_text
+      span.text
+        != "&#8226; 위 내용은 <a href='/'>내 정보 관리</a>에서 수정하실 수 있습니다."
