@@ -47,6 +47,8 @@ footer {
   color: #d7d7d7;
 }
 
+/* input text style */
+
 .input {
   width: 100%;
   height: 45px;
@@ -79,16 +81,7 @@ footer {
   color: red;
 }
 
-/* input[type="text"] {
-  width: 100%;
-  height: 45px;
-  border: 1px solid #d7d7d7;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-  font-size: 15px;
-  padding: 5px 10px;
-} */
-
+/* select box style */
 select {
   width: 100%;
   height: 40px;
@@ -97,6 +90,7 @@ select {
   margin-bottom: 10px;
 }
 
+/* button style */
 button {
   width: 100%;
   height: 60px;
@@ -107,6 +101,34 @@ button {
   border: 0;
 }
 
-.login {
-  color: red;
+/* checkbox style */
+input[type="checkbox"] {
+  border: 1px solid #d7d7d7;
+  margin-right: 10px;
+}
+
+/* label style */
+label {
+  font-size: 15px;
+}
+
+/* line 정리 css */
+.right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.right p {
+  margin: 0 5px;
+  color: #9c9c9c;
+  font-size: 14px;
+}
+
+/* mouse pointer class */
+.click {
+  cursor: pointer;
+}
+
+.click:hover {
+  text-decoration: underline;
 }

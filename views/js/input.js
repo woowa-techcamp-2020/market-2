@@ -3,7 +3,7 @@ import { ID_ERR_MSG, PWD_ERR_MSG, NAME_ERR_MSG } from "./constant.js";
 
 const inputErrEvent = (e) => {
   e.preventDefault();
-  //   console.log(e.target);
+  // console.log(e);
   //   console.log(e.target.nextSibling);
   const name = e.target.name;
   const msg = e.target.nextSibling;
@@ -84,7 +84,8 @@ const inputAddEvent = () => {
 
   for (let i = 0; i < input.length; i++) {
     input[i].addEventListener("blur", inputErrEvent);
-    input[i].addEventListener("focus", inputFocusEvent);
+    // input[i].addEventListener("submit", inputErrEvent);
+    // input[i].addEventListener("keydown", inputErrEvent);
   }
 };
 
