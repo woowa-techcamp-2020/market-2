@@ -21,14 +21,14 @@ let timer;
 (function activateTimerForPhoneVerification() {
   const phoneSubmit = document.querySelector("#phoneSubmit");
   const phoneVerification = document.querySelector("#phoneVerification");
-  const modal = document.querySelector("#phoneVerificationModal");
+  const popup = document.querySelector("#phoneVerificationPopup");
   phoneSubmit.addEventListener("click", () => {
     const phoneVerificationSubmit = phoneVerification.getElementsByTagName(
       "button"
     )[0];
     phoneVerification.style.display = "flex";
     phoneSubmit.textContent = "재전송";
-    modal.style.display = "block";
+    popup.style.display = "block";
 
     let time = 120;
     if (timer) clearInterval(timer);
@@ -49,15 +49,15 @@ let timer;
   });
 })();
 
-(function modalCloseEvent() {
-  const modal = document.querySelector("#phoneVerificationModal");
-  const closeBtn = modal.querySelector(".close");
+(function popupCloseEvent() {
+  const popup = document.querySelector("#phoneVerificationPopup");
+  const closeBtn = popup.querySelector(".close");
   closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
+    popup.style.display = "none";
   });
   window.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
+    if (e.target === popup) {
+      popup.style.display = "none";
     }
   });
 })();
