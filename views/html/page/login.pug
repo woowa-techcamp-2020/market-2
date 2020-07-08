@@ -1,7 +1,22 @@
 extends ../layout/index
 
+block styles
+  link(rel='stylesheet' href='./css/login.css')
+
 block content
-  h2 로그인 페이지
-  +inputText('text','id','아이디',4,20)
-  +inputText('password','password','비밀번호',8,20)
-  +inputText('text','name','이름')
+  //- h2 로그인 페이지
+  form#login(onsubmit="return false;" name='login')
+    +inputText('text','id','아이디',false,4,20)
+    +inputText('password','password','비밀번호',false,8,20)
+    .row
+      .left
+        input#id_save(type="checkbox") 
+        label.id_save_label(for="id_save") 아이디 저장
+      .right
+        p.click#go_id_pwd_find 아이디 / 비밀번호 찾기
+        p |
+        p.click#go_register 회원가입
+    button(type= 'submit') 로그인
+    
+block scripts
+  script(type="module" src="./js/login.js")
