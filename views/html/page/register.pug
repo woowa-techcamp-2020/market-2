@@ -4,59 +4,79 @@ block styles
   link(rel='stylesheet' href='./css/register.css')
 
 block content
-  h4 필수 정보를 입력해 주세요
-  
-  .emailForm
-    input#emailIdInputBox(type="text", name="emailId", value="", placeholder="이메일 앞자리*")
-    p @ 
-    input#emailDomainInputBox(type="text", name="emailDomain", value="", placeholder="이메일 뒷자리*", disabled)
-  select#emailSelector
-    each val in Emails
-      option=val
-  
-  .inputButton#phoneNumber
-    input#phoneNumberBox(type = "text", value = "", placeholder="휴대폰*")
-    button#phoneSubmit(type = "submit") 인증받기
+  h4.title 필수 정보를 입력해 주세요
 
-  .inputButton#phoneVerification(style="display:none;")
-    input#phoneVerificationBox(type="text", value = "", placeholder="인증번호 6자리 입력")
-    button#phoneVerificationSubmit(type = "submit") 확인
-  
-  .popup#phoneVerificationPopup
-    .popup-content
-      .popup-header
-        p 인증번호를 발송했습니다.
-      .popup-body
-        p 인증번호를 확인해주세요.
-      .popup-footer
-        .close 확인
-
-  .inputCheckBox
-    input#addressCheckBox(type="checkbox")
-    label.agreeText(for="addressCheckBox") 선택 정보를 입력하시겠어요?
-    span
-      a(href="https://ceo.baemin.com/#/policy/history?position=collectionAndUsageNormal" target="_blank").linkText 내용보기
-  
-  .addressForm
-    //- input.addressElements(type="text", value="",placeholder="우편번호", disabled, readOnly)
-    //- input.addressElements(type="text", value="",placeholder="우편번호", disabled, readOnly)
-    .row
-      +inputText('text','postcode','우편번호','addressElements',false,true,true)
-      button.btn_small.addressElements(disabled) 주소찾기
-    +inputText('text','address','주소','addressElements',false,true,true)
-    +inputText('text','detailAddress','상세주소','addressElements',false,true,false)
-
-  .agreement
-    input#parentAgreement(type="checkbox") 
-    label.parentAgreeText(for="parentAgreement") 전체 약관에 동의합니다
-    div#subAgreementGroup
-      .subAgreement
-        input.subAgreementCheckBox#mustAgree(type="checkbox")
-        label.subAgreeText(for="mustAgree") 필수 항목에 동의합니다.
-      .subAgreement
-        input.subAgreementCheckBox#adAgree(type="checkbox")
-        label.subAgreeText(for="adAgree") 광고성 정보 수신 동의 (선택)
+  form#register(onsubmit="return false;" name='register')
+    +inputText('text','id','아이디* (4~20자)','',false, false, false, 4, 20)
+    +inputText('password','password','비밀번호* (영문+숫자, 8~20자)','',false, false, false, 8, 20)
+    +inputText('password','passwordCheck','비밀번호 재확인*','',false, false, false, 8, 20)
     
-    button.btn_primary#register 가입완료
+    .emailForm
+      +inputText('text','email','이메일 앞자리*')
+      //- input#emailIdInputBox(type="text", name="emailId", value="", placeholder="이메일 앞자리*")
+      p @ 
+      +inputText('text','emailDomain','이메일 뒷자리*','', false, false, true)
+      //- input#emailDomainInputBox(type="text", name="emailDomain", value="", placeholder="이메일 뒷자리*", disabled)
+    select#emailSelector
+      each val in Emails
+        option=val
+    
+    .inputButton#phoneNumber
+      +inputText('tel','phone','휴대폰*','',false,false,false,0,12,true)
+      button.btn_small#phoneSubmit(type= 'button') 인증받기
+
+    .inputButton#phoneVerification(style="display:none;")
+      +inputText('text','phoneVerificationBox','인증번호 6자리 입력')
+      button.btn_small#phoneVerificationSubmit 확인
+
+    .text_line
+      p &#8226; 인증번호 전송은 통신사에 따라 최대 1분까지 소요될 수 있습니다.
+      p &#8226; 인증번호가 도착하지 않을 경우 '인증번호 재전송'을 눌러주세요.
+    
+    .popup#phoneVerificationPopup
+      .popup-content
+        .popup-header
+          p 인증번호를 발송했습니다.
+        .popup-body
+          p 인증번호를 확인해주세요.
+        .popup-footer
+          .close 확인
+
+    .inputCheckBoxLayer.inputCheckBox
+      input#addressCheckBox(type="checkbox")
+      label.agreeText(for="addressCheckBox") 선택 정보를 입력하시겠어요?
+      span
+        a(href="https://ceo.baemin.com/#/policy/history?position=collectionAndUsageNormal" target="_blank").linkText 내용보기
+    
+    .addressForm
+      .row
+        +inputText('text','postcode','우편번호','addressElements',false,true,true)
+        button.btn_small.addressElements(disabled) 주소찾기
+      +inputText('text','address','주소','addressElements',false,true,true)
+      +inputText('text','detailAddress','상세주소','addressElements',false,true,false)
+
+    .agreement
+      .inputCheckBoxLayer.marginBottom25
+        input#parentAgreement(type="checkbox") 
+        label.parentAgreeText(for="parentAgreement") 전체 약관에 동의합니다
+      div#subAgreementGroup
+        .subAgreement.inputCheckBoxLayer
+          input.subAgreementCheckBox#mustAgree(type="checkbox")
+          label.subAgreeText(for="mustAgree") 필수 항목에 동의합니다.
+        .checkbox_line
+          span
+            a(href="https://ceo.baemin.com/#/policy/history?position=terms" target="_blank") 배민사장님광장 이용약관
+          span
+            a(href="https://ceo.baemin.com/#/policy/history?position=collectionAndUsageNormal" target="_blank") 개인정보 수집이용 동의
+        .subAgreement.inputCheckBoxLayer
+          input.subAgreementCheckBox#adAgree(type="checkbox")
+          label.subAgreeText(for="adAgree") 광고성 정보 수신 동의 (선택)
+        .checkbox_line
+          span 배민사장님광장 회원에게 제공하는 서비스의 광고성 정보를 수신합니다.
+      .text_line.marginTop15
+        span &#8226; 만 14세 이상 회원만 가입 가능합니다.
+        span
+          a(href="https://ceo.baemin.com/#/policy/history?position=collectionAndUsageNormal" target="_blank").linkText 내용보기      
+    button.btn_primary(type= 'submit') 가입완료
 block scripts
   script(type="module" src="./js/register.js")

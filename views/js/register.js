@@ -1,18 +1,18 @@
 (function emailDomainSelectorChangeEvent() {
   const emailSelector = document.querySelector("#emailSelector");
-  const emailInputBox = document.querySelector("#emailDomainInputBox");
+  const emailInputBox = document.querySelector("#emailDomain");
   if (!(emailSelector || emailInputBox)) return;
 
   emailSelector.addEventListener("change", () => {
     const selectedIndex = emailSelector.selectedIndex;
     if (selectedIndex === 0) {
-      emailInputBox.disabled = true;
+      emailInputBox.readOnly = true;
     } else if (selectedIndex === emailSelector.length - 1) {
       emailInputBox.value = "";
-      emailInputBox.disabled = false;
+      emailInputBox.readOnly = false;
     } else {
       emailInputBox.value = emailSelector.value;
-      emailInputBox.disabled = true;
+      emailInputBox.readOnly = true;
     }
   });
 })();
@@ -20,6 +20,15 @@
 let timer;
 (function activateTimerForPhoneVerification() {
   const phoneSubmit = document.querySelector("#phoneSubmit");
+  const phone = document.querySelector("#phone");
+  // console.log(phone);
+  if (!phone.value) {
+    phoneSubmit.disabled = true;
+  }
+  phone.addEventListener(
+    "keyup",
+    () => (phoneSubmit.disabled = phone.value ? false : true)
+  );
   const phoneVerification = document.querySelector("#phoneVerification");
   const popup = document.querySelector("#phoneVerificationPopup");
   phoneSubmit.addEventListener("click", () => {
@@ -113,10 +122,60 @@ const showFindAddress = () => {
   element_layer_out.style.display = "block";
 };
 
+const registerActioins = () => {
+  // document.myForm.action = "/register_comp.pug";
+  // document.myForm.method = "post";
+  // document.myForm.submit();
+
+  // 유효성 체크
+  const form = document.forms["register"];
+  const form_inputs = form.querySelectorAll(".input");
+  const check = document.querySelector("#mustAgree");
+  // console.log(form, form_inputs);
+  // console.log(check.checked);
+
+  // TODO 아이디 중복 확인 체크
+
+  // form 태그 안에 input:text validation error 검사
+  for (let i = 0; i < form_inputs.length; i++) {
+    if (!form_inputs[i].value) {
+      form_inputs[i].focus();
+      form_inputs[i].blur();
+    }
+  }
+
+  // validation error 첫번째 요소 focus
+  for (let i = 0; i < form_inputs.length; i++) {
+    if (!form_inputs[i].value) {
+      form_inputs[i].focus();
+      return false;
+    }
+  }
+
+  // TODO 인증번호 필수값
+
+  if (check.checked) {
+    // TODO 필수 사항 체크 안내 팝업 띄우기
+    return false;
+  }
+
+  // TODO 회원가입 api 호출
+  const res = true;
+  if (res) {
+    // TODO 회원가입 성공하면 회원 정보 받아와서 register_comp 페이지에 넘겨주기
+    location.href = "/register_comp";
+  }
+
+  return true;
+};
+
 (function activateAddressFormChangeEvent() {
   const addressCheckBox = document.querySelector("#addressCheckBox");
   const addressElements = document.querySelectorAll(".addressElements");
   if (!(addressCheckBox || addressElements.length)) return;
+
+  const registerForm = document.querySelector("#register");
+  registerForm.addEventListener("submit", registerActioins);
 
   addressCheckBox.addEventListener("change", () => {
     if (addressCheckBox.checked) {
@@ -135,19 +194,11 @@ const showFindAddress = () => {
   });
 })();
 
-const registerActioins = () => {
-  // document.myForm.action = "/register_comp.pug";
-  // document.myForm.method = "post";
-  // document.myForm.submit();
-
-  location.href = "/register_comp";
-};
-
 (function agreementGroupChangeEvent() {
   const parentAgreement = document.querySelector("#parentAgreement");
   const subAgreementGroup = document.querySelector("#subAgreementGroup");
   const subAgreements = document.querySelectorAll(".subAgreementCheckBox");
-  const registerBtn = document.querySelector("#register");
+
   if (!(parentAgreement || subAgreementGroup || subAgreements.length)) return;
 
   parentAgreement.addEventListener("click", () => {
@@ -168,6 +219,4 @@ const registerActioins = () => {
       parentAgreement.checked = false;
     }
   });
-
-  registerBtn.addEventListener("click", registerActioins);
 })();

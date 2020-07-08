@@ -3,11 +3,32 @@ p {
   margin-right: 5px;
 }
 
+.title {
+  font-weight: normal;
+  margin-top: 40px;
+}
+
 .emailForm {
   display: flex;
 }
 .inputButton {
   display: flex;
+}
+
+#emailSelector {
+  padding: 5px 10px;
+  font-size: 15px;
+}
+
+.text_line p,
+.text_line span {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: -0.1px;
+  color: #898989;
+  font-weight: normal;
+  position: relative;
+  padding-left: 9px;
 }
 
 .popup {
@@ -48,7 +69,14 @@ p {
   text-decoration: none;
 }
 
+.inputCheckBoxLayer {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
 .inputCheckBox {
+  margin-top: 50px;
   margin-bottom: 20px;
 }
 
@@ -62,4 +90,38 @@ p {
   margin-left: 9px;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.agreement {
+  padding: 50px 0 33px;
+}
+
+.parentAgreeText {
+  font-size: 16px;
+  line-height: 25px;
+  letter-spacing: -0.4px;
+  color: #212329;
+  font-weight: bold;
+}
+
+.marginBottom25 {
+  margin-bottom: 25px;
+}
+
+.marginTop15 {
+  margin-top: 15px;
+}
+
+.checkbox_line {
+  padding: 2px 0 0 42px;
+  color: #8e929f;
+  line-height: 24px;
+  font-size: 14px !important;
+}
+
+.checkbox_line a {
+  color: #8e929f;
+  line-height: 24px;
+  font-size: 14px;
+  margin-right: 6px;
 }
