@@ -19,7 +19,7 @@ exports.signup = async (req, res, next) => {
   }
   const err = new APIError({
     message: "Bad Request: Passwords don't match each others",
-    status: httpStatus.BAD_REQUEST,
+    statusCode: httpStatus.BAD_REQUEST,
   });
   logger.error(
     "passwords don't match each others // method signup of user.controller"
@@ -41,7 +41,7 @@ exports.login = async (req, res, next) => {
       if (!user) {
         const err = new APIError({
           message: "Bad Request: User not found",
-          status: httpStatus.BAD_REQUEST,
+          statusCode: httpStatus.BAD_REQUEST,
         });
         logger.error("user not found // method login of user.controller");
         return next(err);
@@ -53,7 +53,7 @@ exports.login = async (req, res, next) => {
 
       const err = new APIError({
         message: "Bad Request: password wrong",
-        status: httpStatus.BAD_REQUEST,
+        statusCode: httpStatus.BAD_REQUEST,
       });
       logger.error("password wrong // method login of user.controller");
       return next(customErr);
@@ -65,7 +65,7 @@ exports.login = async (req, res, next) => {
 
   customErr = new APIError({
     message: "Bad Request: Email or password is null",
-    status: httpStatus.BAD_REQUEST,
+    statusCode: httpStatus.BAD_REQUEST,
   });
   logger.error("email or password null // method login of user.controller");
   next(customErr);

@@ -2,12 +2,13 @@ import httpStatus from "http-status";
 import expressValidation from "express-validation";
 import { APIError } from "./APIError";
 import { env } from "../../config/vars";
+import logger from "../../config/logger";
 
-exports.handler = (err, req, res, next) => {
+const handler = (err, req, res, next) => {
   const response = {
-    code: err.status,
-    message: err.message || httpStatus[err.status],
-    errors: err.errors,
+    statusCode: err.statusCode,
+    message: err.message || httpStatus[err.statusCode],
+    details: err.details,
     stack: err.stack,
   };
 
@@ -15,35 +16,35 @@ exports.handler = (err, req, res, next) => {
     delete response.stack;
   }
 
-  res.status(err.status);
-  res.json(response);
+  res.status(err.statusCode).json(response);
 };
 
-exports.converter = (err, req, res, next) => {
+const converter = (err, req, res, next) => {
   let convertedError = err;
 
   if (err instanceof expressValidation.ValidationError) {
     convertedError = new APIError({
       message: "Validation Error",
-      errors: err.errors,
-      status: err.status,
-      stack: err.stack,
-    });
-  } else if (!(err instanceof APIError)) {
-    convertedError = new APIError({
-      message: err.message,
-      status: err.status,
+      error: err.error,
+      statusCode: err.statusCode,
       stack: err.stack,
     });
   }
 
-  return handler(convertedError, req, res);
+  logger.error("ERROR", err);
+  handler(convertedError, req, res);
 };
 
-exports.notFound = (req, res, next) => {
+const notFound = (req, res, next) => {
   const err = new APIError({
     message: "Not found",
-    status: httpStatus.NOT_FOUND,
+    statusCode: httpStatus.NOT_FOUND,
   });
-  return handler(err, req, res);
+  handler(err, req, res);
+};
+
+module.exports = {
+  handler,
+  converter,
+  notFound,
 };
