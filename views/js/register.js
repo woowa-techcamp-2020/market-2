@@ -17,6 +17,51 @@
   });
 })();
 
+let timer;
+(function activateTimerForPhoneVerification() {
+  const phoneSubmit = document.querySelector("#phoneSubmit");
+  const phoneVerification = document.querySelector("#phoneVerification");
+  const modal = document.querySelector("#phoneVerificationModal");
+  phoneSubmit.addEventListener("click", () => {
+    const phoneVerificationSubmit = phoneVerification.getElementsByTagName(
+      "button"
+    )[0];
+    phoneVerification.style.display = "flex";
+    phoneSubmit.textContent = "재전송";
+    modal.style.display = "block";
+
+    let time = 120;
+    if (timer) clearInterval(timer);
+    timer = setInterval(() => {
+      const now = new Date().getTime();
+      if (time <= 0) {
+        phoneVerification.style.display = "none";
+        phoneSubmit.textContent = "인증받기";
+        clearInterval(timer);
+      } else {
+        const min = parseInt(time / 60);
+        const sec = time - 60 * min;
+        const timeForm = `0${min}:${sec > 10 ? sec : "0" + sec}`;
+        phoneVerificationSubmit.textContent = timeForm + " 확인";
+        time--;
+      }
+    }, 1000);
+  });
+})();
+
+(function modalCloseEvent() {
+  const modal = document.querySelector("#phoneVerificationModal");
+  const closeBtn = modal.querySelector(".close");
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+})();
+
 function closeDaumPostcode(element) {
   element.style.display = "none";
 }
