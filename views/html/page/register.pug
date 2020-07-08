@@ -5,7 +5,6 @@ block styles
 
 block content
   h2 회원가입 페이지
-
   .emailForm
     input#emailIdInputBox(type="text", name="emailId", value="", placeholder="이메일 앞자리*")
     p @ 
@@ -14,6 +13,23 @@ block content
     each val in Emails
       option=val
   
+  .inputButton#phoneNumber
+    input#phoneNumberBox(type = "text", value = "", placeholder="휴대폰*")
+    button#phoneSubmit(type = "submit") 인증받기
+
+  .inputButton#phoneVerification(style="display:none;")
+    input#phoneVerificationBox(type="text", value = "", placeholder="인증번호 6자리 입력")
+    button#phoneVerificationSubmit(type = "submit") 확인
+  
+  .modal#phoneVerificationModal
+    .modal-content
+      .modal-header
+        p 인증번호를 발송했습니다.
+      .modal-body
+        p 인증번호를 확인해주세요.
+      .modal-footer
+        .close 확인
+
   .inputCheckBox
     input#addressCheckBox(type="checkbox")
     label.agreeText(for="addressCheckBox") 선택 정보를 입력하시겠어요?
