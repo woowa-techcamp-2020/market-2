@@ -1,9 +1,11 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../config/database";
+import { encryptoPassword } from "../../views/js/encrypto";
 
 const hooks = {
-  //패스워드 암호화
-  beforeCreate(user) {},
+  beforeCreate(user) {
+    user.password = encryptoPassword(user.password, user.salt);
+  },
 };
 
 const tableName = "users";
@@ -24,13 +26,12 @@ const User = sequelize.define(
       allowNull: false,
     },
     password: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(128),
       allowNull: false,
-      validate: {
-        not: /[~!@#$%^&*()_+|<>?:{}]/i,
-        not: /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i,
-        is: /^.*(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/i,
-      },
+    },
+    salt: {
+      type: DataTypes.STRING(6),
+      allowNull: false,
     },
     phone: {
       type: DataTypes.STRING(15),
@@ -60,6 +61,7 @@ const User = sequelize.define(
 User.prototype.toJSON = function () {
   const values = Object.assign({}, this.get());
   delete values.password;
+  delete values.salt;
 
   return values;
 };
