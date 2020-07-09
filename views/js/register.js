@@ -59,6 +59,9 @@ let timer;
     // 휴대폰 자리수 확인
     if (phone.value.length >= 10) {
       const phoneVerification = document.querySelector("#phoneVerification");
+      const phoneVerificationBox = document.querySelector(
+        "#phoneVerificationBox"
+      );
       showPopUp(
         "인증번호를 발송했습니다.",
         "휴대폰 SMS 발송된 인증번호를 확인해 주세요."
@@ -66,10 +69,9 @@ let timer;
       const phoneVerificationSubmit = phoneVerification.getElementsByTagName(
         "button"
       )[0];
+      phoneVerificationBox.disabled = false;
       phoneVerification.style.display = "flex";
       phoneSubmit.textContent = "재전송";
-      // 팝업 내용 추가
-      popup.style.display = "block";
 
       let time = 120;
       if (timer) clearInterval(timer);
@@ -87,6 +89,20 @@ let timer;
           time--;
         }
       }, 1000);
+      phoneVerificationSubmit.addEventListener("click", () => {
+        // 인증 되었습니다.
+        if (phoneVerificationBox.value) {
+          phoneVerification.style.display = "none";
+          phoneSubmit.disabled = true;
+          phoneSubmit.textContent = "인증완료";
+          clearInterval(timer);
+        } else {
+          showPopUp(
+            "휴대폰 인증",
+            "휴대폰으로 받으신 인증번호를 입력해 주세요."
+          );
+        }
+      });
     }
   });
 })();
@@ -150,50 +166,44 @@ const registerActioins = () => {
   // 유효성 체크
   const form = document.forms["register"];
   const form_inputs = form.querySelectorAll(".input");
+  const phone_Certifi = document.querySelector("#phoneVerificationBox");
   const check = document.querySelector("#mustAgree");
-  const addressCheckBox = document.querySelector("#addressCheckBox");
-  // console.log(form, form_inputs);
+  // console.log(form_inputs);
   // console.log(check.checked);
 
   // TODO 아이디 중복 확인 체크
 
-  // form 태그 안에 input:text validation error 검사
-  // filter 사용해서 disabled 제거
-  for (let i = 0; i < form_inputs.length; i++) {
-    if (!form_inputs[i].value) {
-      if (addressCheckBox.checked) {
-        form_inputs[i].focus();
-        form_inputs[i].blur();
-      } else {
-        if (!form_inputs[i].classList.contains("addressElements")) {
-          form_inputs[i].focus();
-          form_inputs[i].blur();
-        }
-      }
+  // 필수값(input:text) 확인
+  const showInput = [...form_inputs].filter((ele) => !ele.disabled);
+  // console.log(showInput);
+  for (let i = 0; i < showInput.length; i++) {
+    if (!showInput[i].value) {
+      showInput[i].focus();
+      showInput[i].blur();
     }
   }
 
-  // validation error 첫번째 요소 focus
-  for (let i = 0; i < form_inputs.length; i++) {
-    if (!form_inputs[i].value) {
-      if (addressCheckBox.checked) {
-        form_inputs[i].focus();
-        return false;
-      } else {
-        if (!form_inputs[i].classList.contains("addressElements")) {
-          form_inputs[i].focus();
-          return false;
-        }
-      }
+  for (let i = 0; i < showInput.length; i++) {
+    if (!showInput[i].value) {
+      showInput[i].focus();
+      return false;
     }
   }
 
   // TODO 인증번호 필수값
+  if (!phone_Certifi.value) {
+    // TODO 필수 사항 체크 안내 팝업 띄우기
+    showPopUp(
+      "휴대폰 인증",
+      "입력하신 휴대폰에 인증번호를 받아 인증번호를 입력해 주세요."
+    );
+    return false;
+  }
 
   if (!check.checked) {
     // TODO 필수 사항 체크 안내 팝업 띄우기
     showPopUp("필수 항목 확인", "회원가입을 위해 필수 항목에 동의해주세요.");
-    return false;
+    return;
   }
 
   // TODO 회원가입 api 호출
