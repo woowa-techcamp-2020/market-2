@@ -5,7 +5,7 @@ const router = Router();
 /**
  * 유저 회원가입
  * post: /api/user
- * req.body { uid, password, confirm, phone, address, fullName, advertiseAgree }
+ * req.body { uid, password, confirm, phone, address, fullName, advertiseAgree, salt }
  * response { user }
  */
 router.post("/", users.signup);

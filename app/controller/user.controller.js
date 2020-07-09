@@ -1,6 +1,6 @@
 import User from "../model/user";
 import logger from "../../config/logger";
-import { encryptoPassword } from "../../views/js/encrypto";
+import { encryptoPassword } from "../middleware/encrypto";
 
 exports.signup = async (req, res, next) => {
   const { body } = req;
@@ -43,7 +43,8 @@ exports.login = async (req, res, next) => {
         return next(err);
       }
 
-      if (encryptoPassword(user.password, user.salt) === password) {
+      const hashedPassword = await encryptoPassword(user.password, user.salt);
+      if (hashedPassword === password) {
         delete user.password;
         delete user.salt;
         return res.status(200).json(user);
