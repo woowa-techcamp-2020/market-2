@@ -1,6 +1,7 @@
-import { IdCheck, PasswordCheck, NameCheck } from "./validation.js";
+import { uidCheck, PasswordCheck, NameCheck } from "./validation.js";
+import { idCheck } from "./apis/index.js";
 import {
-  ID_ERR_MSG,
+  UID_ERR_MSG,
   PWD_ERR_MSG,
   NAME_ERR_MSG,
   PWD_CHECK_ERR_MSG,
@@ -28,17 +29,21 @@ const inputErrEvent = (e) => {
 
   // null, value err, length
   switch (name) {
-    case "id":
+    case "uid":
       // TODO 사용중인 아이디도 확인
       if (!e.target.value) {
         addClass();
-        msg.innerHTML = ID_ERR_MSG.NULL;
+        msg.innerHTML = UID_ERR_MSG.NULL;
         return;
       }
-      // const pw = document.querySelector("#id");
-      if (!IdCheck(e.target.value)) {
+      if (!uidCheck(e.target.value)) {
         addClass();
-        msg.innerHTML = ID_ERR_MSG.VALUE_ERR;
+        msg.innerHTML = UID_ERR_MSG.VALUE_ERR;
+      }
+      if (idCheck(e.target.value)) {
+        console.log("I'm idCheck");
+        addClass();
+        msg.innerHTML = UID_ERR_MSG.DUPLICATED;
       } else {
         removeClass();
       }
