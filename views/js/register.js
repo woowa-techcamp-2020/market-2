@@ -1,3 +1,5 @@
+import { register, idCheck } from "./apis/index.js";
+
 const showPopUp = (title, contents) => {
   const popup = document.querySelector("#popup");
   const closeBtn = popup.querySelector(".close");
@@ -142,77 +144,10 @@ const showFindAddress = () => {
   element_layer_out.style.display = "block";
 };
 
-const registerActioins = () => {
-  // document.myForm.action = "/register_comp.pug";
-  // document.myForm.method = "post";
-  // document.myForm.submit();
-
-  // 유효성 체크
-  const form = document.forms["register"];
-  const form_inputs = form.querySelectorAll(".input");
-  const check = document.querySelector("#mustAgree");
-  const addressCheckBox = document.querySelector("#addressCheckBox");
-  // console.log(form, form_inputs);
-  // console.log(check.checked);
-
-  // TODO 아이디 중복 확인 체크
-
-  // form 태그 안에 input:text validation error 검사
-  // filter 사용해서 disabled 제거
-  for (let i = 0; i < form_inputs.length; i++) {
-    if (!form_inputs[i].value) {
-      if (addressCheckBox.checked) {
-        form_inputs[i].focus();
-        form_inputs[i].blur();
-      } else {
-        if (!form_inputs[i].classList.contains("addressElements")) {
-          form_inputs[i].focus();
-          form_inputs[i].blur();
-        }
-      }
-    }
-  }
-
-  // validation error 첫번째 요소 focus
-  for (let i = 0; i < form_inputs.length; i++) {
-    if (!form_inputs[i].value) {
-      if (addressCheckBox.checked) {
-        form_inputs[i].focus();
-        return false;
-      } else {
-        if (!form_inputs[i].classList.contains("addressElements")) {
-          form_inputs[i].focus();
-          return false;
-        }
-      }
-    }
-  }
-
-  // TODO 인증번호 필수값
-
-  if (!check.checked) {
-    // TODO 필수 사항 체크 안내 팝업 띄우기
-    showPopUp("필수 항목 확인", "회원가입을 위해 필수 항목에 동의해주세요.");
-    return false;
-  }
-
-  // TODO 회원가입 api 호출
-  const res = true;
-  if (res) {
-    // TODO 회원가입 성공하면 회원 정보 받아와서 register_comp 페이지에 넘겨주기
-    location.href = "/register_comp";
-  }
-
-  return true;
-};
-
 (function activateAddressFormChangeEvent() {
   const addressCheckBox = document.querySelector("#addressCheckBox");
   const addressElements = document.querySelectorAll(".addressElements");
   if (!(addressCheckBox || addressElements.length)) return;
-
-  const registerForm = document.querySelector("#register");
-  registerForm.addEventListener("submit", registerActioins);
 
   addressCheckBox.addEventListener("change", () => {
     if (addressCheckBox.checked) {
@@ -255,6 +190,83 @@ const registerActioins = () => {
     } else {
       parentAgreement.checked = false;
     }
+  });
+})();
+
+(function registerActioins() {
+  const registerForm = document.querySelector("#regBtn");
+  registerForm.addEventListener("click", () => {
+    // 유효성 체크
+    const form = document.forms["register"];
+    const form_inputs = form.querySelectorAll(".input");
+    const check = document.querySelector("#mustAgree");
+    const advertiseAgree = document.querySelector("#adAgree");
+    const addressCheckBox = document.querySelector("#addressCheckBox");
+
+    const data = {
+      uid: form_inputs[0].value,
+      password: form_inputs[1].value,
+      confirm: form_inputs[2].value,
+      email: form_inputs[3].value + "@" + form_inputs[4].value,
+      phone: form_inputs[5].value,
+      address: form_inputs[8].value + " " + form_inputs[9].value,
+      advertiseAgree: advertiseAgree.checked,
+    };
+
+    // TODO 아이디 중복 확인 체크
+    if (idCheck(data.uid)) {
+      form_inputs[0].focus();
+      form_inputs[0].blur();
+      return false;
+    }
+
+    // form 태그 안에 input:text validation error 검사
+    // filter 사용해서 disabled 제거
+    for (let i = 0; i < form_inputs.length; i++) {
+      if (!form_inputs[i].value) {
+        if (addressCheckBox.checked) {
+          form_inputs[i].focus();
+          form_inputs[i].blur();
+        } else {
+          if (!form_inputs[i].classList.contains("addressElements")) {
+            form_inputs[i].focus();
+            form_inputs[i].blur();
+          }
+        }
+      }
+    }
+
+    // validation error 첫번째 요소 focus
+    for (let i = 0; i < form_inputs.length; i++) {
+      if (!form_inputs[i].value) {
+        if (addressCheckBox.checked) {
+          form_inputs[i].focus();
+          return false;
+        } else {
+          if (!form_inputs[i].classList.contains("addressElements")) {
+            form_inputs[i].focus();
+            return false;
+          }
+        }
+      }
+    }
+
+    // TODO 인증번호 필수값
+
+    if (!check.checked) {
+      // TODO 필수 사항 체크 안내 팝업 띄우기
+      showPopUp("필수 항목 확인", "회원가입을 위해 필수 항목에 동의해주세요.");
+      return false;
+    }
+
+    // TODO 회원가입 api 호출
+    const res = true;
+    if (res) {
+      // TODO 회원가입 성공하면 회원 정보 받아와서 register_comp 페이지에 넘겨주기
+      location.href = "/register_comp";
+    }
+
+    return true;
   });
 })();
 
