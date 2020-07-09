@@ -7,7 +7,7 @@ block content
   h4.title 필수 정보를 입력해 주세요
 
   form#register(onsubmit="return false;" name='register')
-    +inputText('text','id','아이디* (4~20자)','',false, false, false, 4, 20)
+    +inputText('text','uid','아이디* (4~20자)','',false, false, false, 4, 20)
     +inputText('password','password','비밀번호* (영문+숫자, 8~20자)','',false, false, false, 8, 20)
     +inputText('password','passwordCheck','비밀번호 재확인*','',false, false, false, 8, 20)
     
@@ -68,6 +68,6 @@ block content
         span &#8226; 만 14세 이상 회원만 가입 가능합니다.
         span
           a#join_condition.linkText 내용보기      
-    button.btn_primary(type= 'submit') 가입완료
+    button.btn_primary#regBtn(type= 'submit') 가입완료
 block scripts
   script(type="module" src="./js/register.js")
