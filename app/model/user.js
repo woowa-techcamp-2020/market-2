@@ -1,10 +1,10 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../config/database";
-import { encryptoPassword } from "../../views/js/encrypto";
+import { encryptoPassword } from "../middleware/encrypto";
 
 const hooks = {
-  beforeCreate(user) {
-    user.password = encryptoPassword(user.password, user.salt);
+  async beforeCreate(user) {
+    user.password = await encryptoPassword(user.password, user.salt);
   },
 };
 
