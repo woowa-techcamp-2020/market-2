@@ -1,3 +1,4 @@
+import { idCheck, register } from "./apis/index.js";
 const goPageActions = (url) => {
   location.href = url;
   console.log("go page" + url);
@@ -54,7 +55,7 @@ const saveIdActions = () => {
   }
 };
 
-const init = () => {
+const init = async () => {
   const loginForm = document.querySelector("#login");
   loginForm.addEventListener("submit", loginActions);
 
@@ -62,6 +63,23 @@ const init = () => {
   saveId.addEventListener("click", saveIdActions);
 
   loadIdActions();
+
+  const data = {
+    uid: "loloarla",
+    email: "siosio34@nate.com",
+    password: "qwer1@3$",
+    conirm: "qwer1@3$",
+    fullName: "이종구",
+    phone: "010-9924-2316",
+    address: "동탄순환대로17길31",
+    advertiseAgree: true,
+  };
+
+  const regi = await register(data);
+  console.log(regi);
+
+  // const idCheckkk = await idCheck("loloara");
+  // console.log(idCheckkk);
 
   const goRegisterbtn = document.querySelector("#go_register");
   goRegisterbtn.addEventListener("click", () => goPageActions("/register"));
