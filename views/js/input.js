@@ -35,8 +35,8 @@ const inputErrEvent = (e) => {
         msg.innerHTML = ID_ERR_MSG.NULL;
         return;
       }
-      const pw = document.querySelector("#id");
-      if (e.target.value !== pw.value) {
+      // const pw = document.querySelector("#id");
+      if (!IdCheck(e.target.value)) {
         addClass();
         msg.innerHTML = ID_ERR_MSG.VALUE_ERR;
       } else {

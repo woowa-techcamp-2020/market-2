@@ -158,6 +158,7 @@ const registerActioins = () => {
   // TODO 아이디 중복 확인 체크
 
   // form 태그 안에 input:text validation error 검사
+  // filter 사용해서 disabled 제거
   for (let i = 0; i < form_inputs.length; i++) {
     if (!form_inputs[i].value) {
       if (addressCheckBox.checked) {
