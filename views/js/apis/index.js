@@ -1,23 +1,17 @@
 import { REGISTER, LOGIN, ID_CHECK, USER_LIST } from "./endpoints.js";
+import { encryptoPassword, createSalt } from "../encrypto.js";
 const xhr = new XMLHttpRequest();
 
 export const register = (data) => {
   xhr.open(REGISTER.method, REGISTER.url);
   xhr.setRequestHeader("Content-type", REGISTER.type);
-  // body
-  //   const data = {
-  //     uid: "loloarla",
-  //     email: "siosio34@nate.com",
-  //     password: "qwer1@3$",
-  //     conirm: "qwer1@3$",
-  //     fullName: "이종구",
-  //     phone: "010-9924-2316",
-  //     address: "동탄순환대로17길31",
-  //     advertiseAgree: true,
-  //   }
+  data.mySalt = createSalt();
+  data.password = encryptoPassword(data.password, data.mySalt);
+  data.confirm = encryptoPassword(data.confirm, data.mySalt);
+
   xhr.send(JSON.stringify(data));
 
-  xhr.onreadystatechange = (e) => {
+  xhr.onreadystatechange = async (e) => {
     if (xhr.readyState !== XMLHttpRequest.DONE) return;
 
     if (xhr.status === 201) {
@@ -30,18 +24,23 @@ export const register = (data) => {
   return xhr;
 };
 
-export const idCheck = (id) => {
-  xhr.open(ID_CHECK.method, `${ID_CHECK.url}/${id}`);
+export const idCheck = async (uid) => {
+  xhr.open(ID_CHECK.method, `${ID_CHECK.url}/${uid}`);
   xhr.send();
 
   xhr.onreadystatechange = (e) => {
     if (xhr.readyState !== XMLHttpRequest.DONE) return;
 
     if (xhr.status === 200) {
-      console.log(xhr);
+      const response = JSON.parse(xhr.response);
+      return response.result;
     } else {
       console.log("Error!");
+      return true;
     }
   };
+};
+
+export const login = (data) => {
   return xhr;
 };
