@@ -1,18 +1,44 @@
+const showPopUp = (title, contents) => {
+  const popup = document.querySelector("#popup");
+  const closeBtn = popup.querySelector(".close");
+  const popup_title = popup.querySelector(".popup-title");
+  const popup_contents = popup.querySelector(".popup-contents");
+
+  console.log(popup_title.value, popup_contents.value);
+  popup_title.innerText = title;
+  popup_contents.innerText = contents;
+  popup.style.display = "block";
+
+  closeBtn.addEventListener("click", () => {
+    popup.style.display = "none";
+    popup_title.innerText = "";
+    popup_contents.innerText = "";
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === popup) {
+      popup.style.display = "none";
+      popup_title.value = "";
+      popup_contents.value = "";
+    }
+  });
+};
+
 (function emailDomainSelectorChangeEvent() {
   const emailSelector = document.querySelector("#emailSelector");
-  const emailInputBox = document.querySelector("#emailDomainInputBox");
+  const emailInputBox = document.querySelector("#emailDomain");
   if (!(emailSelector || emailInputBox)) return;
 
   emailSelector.addEventListener("change", () => {
     const selectedIndex = emailSelector.selectedIndex;
     if (selectedIndex === 0) {
-      emailInputBox.disabled = true;
+      emailInputBox.readOnly = true;
     } else if (selectedIndex === emailSelector.length - 1) {
       emailInputBox.value = "";
-      emailInputBox.disabled = false;
+      emailInputBox.readOnly = false;
     } else {
       emailInputBox.value = emailSelector.value;
-      emailInputBox.disabled = true;
+      emailInputBox.readOnly = true;
     }
   });
 })();
@@ -20,44 +46,47 @@
 let timer;
 (function activateTimerForPhoneVerification() {
   const phoneSubmit = document.querySelector("#phoneSubmit");
-  const phoneVerification = document.querySelector("#phoneVerification");
-  const popup = document.querySelector("#phoneVerificationPopup");
+  const phone = document.querySelector("#phone");
+  if (!phone.value) {
+    phoneSubmit.disabled = true;
+  }
+  phone.addEventListener(
+    "keyup",
+    () => (phoneSubmit.disabled = phone.value ? false : true)
+  );
+
   phoneSubmit.addEventListener("click", () => {
-    const phoneVerificationSubmit = phoneVerification.getElementsByTagName(
-      "button"
-    )[0];
-    phoneVerification.style.display = "flex";
-    phoneSubmit.textContent = "재전송";
-    popup.style.display = "block";
+    // 휴대폰 자리수 확인
+    if (phone.value.length >= 10) {
+      const phoneVerification = document.querySelector("#phoneVerification");
+      showPopUp(
+        "인증번호를 발송했습니다.",
+        "휴대폰 SMS 발송된 인증번호를 확인해 주세요."
+      );
+      const phoneVerificationSubmit = phoneVerification.getElementsByTagName(
+        "button"
+      )[0];
+      phoneVerification.style.display = "flex";
+      phoneSubmit.textContent = "재전송";
+      // 팝업 내용 추가
+      popup.style.display = "block";
 
-    let time = 120;
-    if (timer) clearInterval(timer);
-    timer = setInterval(() => {
-      const now = new Date().getTime();
-      if (time <= 0) {
-        phoneVerification.style.display = "none";
-        phoneSubmit.textContent = "인증받기";
-        clearInterval(timer);
-      } else {
-        const min = parseInt(time / 60);
-        const sec = time - 60 * min;
-        const timeForm = `0${min}:${sec > 10 ? sec : "0" + sec}`;
-        phoneVerificationSubmit.textContent = timeForm + " 확인";
-        time--;
-      }
-    }, 1000);
-  });
-})();
-
-(function popupCloseEvent() {
-  const popup = document.querySelector("#phoneVerificationPopup");
-  const closeBtn = popup.querySelector(".close");
-  closeBtn.addEventListener("click", () => {
-    popup.style.display = "none";
-  });
-  window.addEventListener("click", (e) => {
-    if (e.target === popup) {
-      popup.style.display = "none";
+      let time = 120;
+      if (timer) clearInterval(timer);
+      timer = setInterval(() => {
+        const now = new Date().getTime();
+        if (time <= 0) {
+          phoneVerification.style.display = "none";
+          phoneSubmit.textContent = "인증받기";
+          clearInterval(timer);
+        } else {
+          const min = parseInt(time / 60);
+          const sec = time - 60 * min;
+          const timeForm = `0${min}:${sec > 10 ? sec : "0" + sec}`;
+          phoneVerificationSubmit.textContent = timeForm + " 확인";
+          time--;
+        }
+      }, 1000);
     }
   });
 })();
@@ -113,10 +142,76 @@ const showFindAddress = () => {
   element_layer_out.style.display = "block";
 };
 
+const registerActioins = () => {
+  // document.myForm.action = "/register_comp.pug";
+  // document.myForm.method = "post";
+  // document.myForm.submit();
+
+  // 유효성 체크
+  const form = document.forms["register"];
+  const form_inputs = form.querySelectorAll(".input");
+  const check = document.querySelector("#mustAgree");
+  const addressCheckBox = document.querySelector("#addressCheckBox");
+  // console.log(form, form_inputs);
+  // console.log(check.checked);
+
+  // TODO 아이디 중복 확인 체크
+
+  // form 태그 안에 input:text validation error 검사
+  for (let i = 0; i < form_inputs.length; i++) {
+    if (!form_inputs[i].value) {
+      if (addressCheckBox.checked) {
+        form_inputs[i].focus();
+        form_inputs[i].blur();
+      } else {
+        if (!form_inputs[i].classList.contains("addressElements")) {
+          form_inputs[i].focus();
+          form_inputs[i].blur();
+        }
+      }
+    }
+  }
+
+  // validation error 첫번째 요소 focus
+  for (let i = 0; i < form_inputs.length; i++) {
+    if (!form_inputs[i].value) {
+      if (addressCheckBox.checked) {
+        form_inputs[i].focus();
+        return false;
+      } else {
+        if (!form_inputs[i].classList.contains("addressElements")) {
+          form_inputs[i].focus();
+          return false;
+        }
+      }
+    }
+  }
+
+  // TODO 인증번호 필수값
+
+  if (!check.checked) {
+    // TODO 필수 사항 체크 안내 팝업 띄우기
+    showPopUp("필수 항목 확인", "회원가입을 위해 필수 항목에 동의해주세요.");
+    return false;
+  }
+
+  // TODO 회원가입 api 호출
+  const res = true;
+  if (res) {
+    // TODO 회원가입 성공하면 회원 정보 받아와서 register_comp 페이지에 넘겨주기
+    location.href = "/register_comp";
+  }
+
+  return true;
+};
+
 (function activateAddressFormChangeEvent() {
   const addressCheckBox = document.querySelector("#addressCheckBox");
   const addressElements = document.querySelectorAll(".addressElements");
   if (!(addressCheckBox || addressElements.length)) return;
+
+  const registerForm = document.querySelector("#register");
+  registerForm.addEventListener("submit", registerActioins);
 
   addressCheckBox.addEventListener("change", () => {
     if (addressCheckBox.checked) {
@@ -135,19 +230,11 @@ const showFindAddress = () => {
   });
 })();
 
-const registerActioins = () => {
-  // document.myForm.action = "/register_comp.pug";
-  // document.myForm.method = "post";
-  // document.myForm.submit();
-
-  location.href = "/register_comp";
-};
-
 (function agreementGroupChangeEvent() {
   const parentAgreement = document.querySelector("#parentAgreement");
   const subAgreementGroup = document.querySelector("#subAgreementGroup");
   const subAgreements = document.querySelectorAll(".subAgreementCheckBox");
-  const registerBtn = document.querySelector("#register");
+
   if (!(parentAgreement || subAgreementGroup || subAgreements.length)) return;
 
   parentAgreement.addEventListener("click", () => {
@@ -168,6 +255,17 @@ const registerActioins = () => {
       parentAgreement.checked = false;
     }
   });
-
-  registerBtn.addEventListener("click", registerActioins);
 })();
+
+const init = () => {
+  // 다시 돌아왔을 때 input value 초기화
+  const joinCondition = document.querySelector("#join_condition");
+  joinCondition.addEventListener("click", () =>
+    showPopUp(
+      "",
+      "정보통신망 이용촉진 및 정보보호 등에 관한 법률에서는 만 14세 미만 아동의 개인정보 수집 시 법정대리인 동의를 받도록 규정하고 있으며, 만 14세 미만 아동이 법정대리인 동의없이 회원가입을 하는 경우 회원탈퇴 또는 서비스 이용이 제한 될 수 있습니다."
+    )
+  );
+};
+
+init();

@@ -20,6 +20,15 @@ html(lang='en')
           h3 주소검색
           img#btnCloseLayer(src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAAoUlEQVRYhe2WQQ6DMAwEaR/Ron4RnosUeM30QA5WhSBxbNKD5xSEnB1IHBiGIAj+HWACRkXdCEyt4TM7qUYih6dcO7cIvIAlT7QBn4Kat6hZS2rMJMzDayTcwksk3MPPJG4LFxJyh6efcXW7aiXkm2h68qfS4XFx7UfXJTjacJrDyixc3POVKGk1N4maPjeX0BwyphL0/hznyfr9kARBcAdfWXAH/8Hnf54AAAAASUVORK5CYII", alt="닫기 버튼")
         #layer
+    
+    #popup
+      .popup-layout
+        .popup-content
+          p.popup-title 제목
+          p.popup-contents 내용
+        .popup-footer
+          .close 확인
+
   script(type="module" src="./js/index.js")
   script(type="module" src="./js/validation.js")
   block scripts
