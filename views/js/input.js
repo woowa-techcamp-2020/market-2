@@ -6,6 +6,7 @@ import {
   PWD_CHECK_ERR_MSG,
   PHONE_ERR_MSG,
   EMAIL_ERR_MSG,
+  CERTI_ERR_MSG,
 } from "./constant.js";
 
 const inputErrEvent = (e) => {
@@ -62,8 +63,9 @@ const inputErrEvent = (e) => {
         msg.innerHTML = PWD_CHECK_ERR_MSG.NULL;
         return;
       }
-
-      if (!PasswordCheck(e.target.value)) {
+      const password = document.querySelector("#password");
+      // console.log(password, e.target.value);
+      if (e.target.value !== password.value) {
         addClass();
         msg.innerHTML = PWD_CHECK_ERR_MSG.VALUE_ERR;
       } else {
@@ -83,13 +85,22 @@ const inputErrEvent = (e) => {
         removeClass();
       }
       break;
+    case "phoneVerificationBox":
+      if (!e.target.value) {
+        addClass();
+        msg.innerHTML = CERTI_ERR_MSG.NULL;
+        return;
+      } else {
+        removeClass();
+      }
+      break;
     case "email":
       if (!e.target.value) {
         addClass();
         msg.innerHTML = EMAIL_ERR_MSG.NULL;
         return;
       }
-      if (e.target.value.length < 10) {
+      if (e.target.value.length < 4) {
         addClass();
         msg.innerHTML = EMAIL_ERR_MSG.VALUE_ERR;
       } else {

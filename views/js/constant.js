@@ -13,11 +13,14 @@ export const PWD_CHECK_ERR_MSG = {
 };
 export const EMAIL_ERR_MSG = {
   NULL: "이메일을 입력해 주세요.",
-  VALUE_ERR:
-    "이름에 특수문자, 숫자는 입력하실 수 없습니다. 다시 입력해 주세요.",
+  VALUE_ERR: "이메일을 확인해 주세요.",
 };
 export const PHONE_ERR_MSG = {
   NULL: "휴대폰 번호를 입력해 주세요.",
+  VALUE_ERR: "휴대폰 번호를 확인해 주세요.",
+};
+export const CERTI_ERR_MSG = {
+  NULL: "인증번호를 입력해 주세요.",
   VALUE_ERR: "휴대폰 번호를 확인해 주세요.",
 };
 export const NAME_ERR_MSG = {
