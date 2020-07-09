@@ -1,5 +1,6 @@
 import User from "../model/user";
 import logger from "../../config/logger";
+import { encryptoPassword } from "../../views/js/encrypto";
 
 exports.signup = async (req, res, next) => {
   const { body } = req;
@@ -42,7 +43,9 @@ exports.login = async (req, res, next) => {
         return next(err);
       }
 
-      if (user.password === password) {
+      if (encryptoPassword(user.password, user.salt) === password) {
+        delete user.password;
+        delete user.salt;
         return res.status(200).json(user);
       }
 
@@ -88,9 +91,37 @@ exports.existsById = async (req, res, next) => {
 exports.getAll = async (req, res, next) => {
   try {
     const users = await User.findAll();
+    users.map((user) => {
+      delete user.password;
+      delete user.salt;
+      return user;
+    });
     return res.status(200).json(users);
   } catch (err) {
     logger.error("500 // meethod getAll of user.controller");
+    next(err);
+  }
+};
+
+exports.getSaltById = async (req, res, next) => {
+  const uid = req.params.uid;
+  try {
+    const user = await User.findOne({
+      where: {
+        uid,
+      },
+    });
+    if (!user) {
+      const err = {
+        message: "Bad Request: No User Exists",
+        code: "NoUser",
+      };
+      next(err);
+    } else {
+      res.status(200).json({ salt: user.salt });
+    }
+  } catch (err) {
+    logger.error("500 // method getSaltById of user.controller");
     next(err);
   }
 };

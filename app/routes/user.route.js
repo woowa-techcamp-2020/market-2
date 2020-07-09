@@ -32,4 +32,11 @@ router.post("/login", users.login);
  */
 router.get("/dup/:uid", users.existsById);
 
+/**
+ * 유저 Salt값 요청
+ * get: /api/user/salt/:uid
+ * response { salt: 29043 }
+ */
+router.get("/dup/:uid", users.getSaltById);
+
 module.exports = router;
