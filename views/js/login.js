@@ -68,7 +68,7 @@ const init = async () => {
     uid: "loloarla",
     email: "siosio34@nate.com",
     password: "qwer1@3$",
-    conirm: "qwer1@3$",
+    confirm: "qwer1@3$",
     fullName: "이종구",
     phone: "010-9924-2316",
     address: "동탄순환대로17길31",

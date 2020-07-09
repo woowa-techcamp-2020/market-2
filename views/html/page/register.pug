@@ -26,8 +26,8 @@ block content
       button.btn_small#phoneSubmit(type= 'button') 인증받기
 
     .inputButton#phoneVerification(style="display:none;")
-      +inputText('text','phoneVerificationBox','인증번호 6자리 입력')
-      button.btn_small#phoneVerificationSubmit 확인
+      +inputText('text','phoneVerificationBox','인증번호 6자리 입력','',false,true)
+      button.btn_small#phoneVerificationSubmit(type='button') 확인
 
     .text_line
       p &#8226; 인증번호 전송은 통신사에 따라 최대 1분까지 소요될 수 있습니다.
