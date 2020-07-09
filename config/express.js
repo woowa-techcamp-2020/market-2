@@ -9,7 +9,6 @@ import path from "path";
 import routes from "../app/routes";
 import logger from "./logger";
 import { logs } from "./vars";
-import error from "../app/middleware/error";
 import errorHandler from "../app/middleware/errorHandler";
 import userRoute from "../app/routes/user.route";
 
