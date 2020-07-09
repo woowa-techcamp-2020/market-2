@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import User from "../model/user";
 import logger from "../../config/logger";
 import { encryptoPassword } from "../middleware/encrypto";
@@ -26,6 +27,7 @@ exports.signup = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   const { uid, password } = req.body;
+  const secret = req.app.get("jwt-secret");
 
   if (uid && password) {
     try {
@@ -44,10 +46,32 @@ exports.login = async (req, res, next) => {
       }
 
       const hashedPassword = await encryptoPassword(user.password, user.salt);
+
+      console.log(password, hashedPassword);
       if (hashedPassword === password) {
         delete user.password;
         delete user.salt;
-        return res.status(200).json(user);
+
+        // console.log("@@@@@@@@@", user.dataValues);
+        const token = await new Promise((resolve, reject) => {
+          jwt.sign(
+            user.dataValues,
+            secret,
+            {
+              expiresIn: "2h",
+              subject: "userInfo",
+            },
+            (err, token) => {
+              if (err) reject(err);
+              resolve(token);
+            }
+          );
+        });
+
+        return res.status(200).json({
+          message: "logged in successfully",
+          token,
+        });
       }
 
       const err = {
