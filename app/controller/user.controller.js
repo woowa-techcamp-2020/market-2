@@ -52,7 +52,7 @@ exports.login = async (req, res, next) => {
         delete user.password;
         delete user.salt;
 
-        console.log("@@@@@@@@@", user.dataValues);
+        // console.log("@@@@@@@@@", user.dataValues);
         const token = await new Promise((resolve, reject) => {
           jwt.sign(
             user.dataValues,
