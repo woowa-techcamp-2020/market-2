@@ -1,7 +1,8 @@
-export const ID_ERR_MSG = {
+export const UID_ERR_MSG = {
   NULL: "아이디를 입력해 주세요.",
   VALUE_ERR:
     "아이디는 영 소문자, 숫자, 특수기호(_), (-)를 사용하여 4~20자리로 입력해 주세요.",
+  DUPLICATED: "이미 사용중인 아이디 입니다. 다른 아이디를 입력해 주세요.",
 };
 export const PWD_ERR_MSG = {
   NULL: "비밀번호를 입력해 주세요.",
