@@ -3,6 +3,27 @@ import User from "../model/user";
 import logger from "../../config/logger";
 import { encryptoPassword } from "../middleware/encrypto";
 
+const isVerifyToken = (token, req, res, respond) => {
+  // create a promise that decodes the token
+  const p = new Promise((resolve, reject) => {
+    jwt.verify(token, req.app.get("jwt-secret"), (err, decoded) => {
+      if (err) reject(err);
+      resolve(decoded);
+    });
+  });
+
+  // if it has failed to verify, it will return an error message
+  const onError = (error) => {
+    res.status(403).json({
+      success: false,
+      message: error.message,
+    });
+  };
+
+  // return
+  p.then(respond).catch(onError);
+};
+
 exports.signup = async (req, res, next) => {
   const { body } = req;
   if (body.password === body.confirm) {
@@ -129,7 +150,9 @@ exports.getAll = async (req, res, next) => {
 };
 
 exports.getSaltById = async (req, res, next) => {
+  const token = req.headers["x-access-token"] || req.query.token;
   const uid = req.params.uid;
+  console.log(token, uid);
   try {
     const user = await User.findOne({
       where: {
@@ -143,7 +166,16 @@ exports.getSaltById = async (req, res, next) => {
       };
       next(err);
     } else {
-      res.status(200).json({ salt: user.salt });
+      // if token is valid, it will respond with its info
+      const respond = (token) => {
+        res.status(200).json({
+          success: true,
+          salt: token.salt,
+        });
+      };
+
+      isVerifyToken(token, req, res, respond);
+      // res.status(200).json({ salt: user.salt });
     }
   } catch (err) {
     logger.error("500 // method getSaltById of user.controller");
