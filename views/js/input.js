@@ -1,5 +1,5 @@
 import { uidCheck, PasswordCheck, NameCheck } from "./validation.js";
-import { idCheck } from "./apis/index.js";
+import { alreadyRegisterId } from "./apis/index.js";
 import {
   UID_ERR_MSG,
   PWD_ERR_MSG,
@@ -10,10 +10,8 @@ import {
   CERTI_ERR_MSG,
 } from "./constant.js";
 
-const inputErrEvent = (e) => {
+const inputErrEvent = async (e) => {
   e.preventDefault();
-  // console.log(e);
-  //   console.log(e.target.nextSibling);
   const name = e.target.name;
   const msg = e.target.nextSibling;
 
@@ -30,7 +28,6 @@ const inputErrEvent = (e) => {
   // null, value err, length
   switch (name) {
     case "uid":
-      // TODO 사용중인 아이디도 확인
       if (!e.target.value) {
         addClass();
         msg.innerHTML = UID_ERR_MSG.NULL;
@@ -40,8 +37,8 @@ const inputErrEvent = (e) => {
         addClass();
         msg.innerHTML = UID_ERR_MSG.VALUE_ERR;
       }
-      if (idCheck(e.target.value)) {
-        console.log("I'm idCheck");
+      const isDup = await alreadyRegisterId(e.target.value);
+      if (isDup) {
         addClass();
         msg.innerHTML = UID_ERR_MSG.DUPLICATED;
       } else {
@@ -69,7 +66,6 @@ const inputErrEvent = (e) => {
         return;
       }
       const password = document.querySelector("#password");
-      // console.log(password, e.target.value);
       if (e.target.value !== password.value) {
         addClass();
         msg.innerHTML = PWD_CHECK_ERR_MSG.VALUE_ERR;
@@ -112,14 +108,14 @@ const inputErrEvent = (e) => {
         removeClass();
       }
       break;
-    case "name":
+    case "fullname":
       if (!e.target.value) {
         addClass();
         msg.innerHTML = NAME_ERR_MSG.NULL;
         return;
       }
 
-      if (e.target.value.length < 3) {
+      if (e.target.value.length < 2) {
         addClass();
         msg.innerHTML = NAME_ERR_MSG.MIN_LENGTH;
         return;
@@ -143,12 +139,9 @@ const inputFocusEvent = (e) => {
 
 const inputAddEvent = () => {
   const input = document.querySelectorAll(".input");
-  //   console.log(input);
 
   for (let i = 0; i < input.length; i++) {
     input[i].addEventListener("blur", inputErrEvent);
-    // input[i].addEventListener("submit", inputErrEvent);
-    // input[i].addEventListener("keydown", inputErrEvent);
   }
 };
 
