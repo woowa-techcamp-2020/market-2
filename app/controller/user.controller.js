@@ -151,7 +151,6 @@ exports.getAll = async (req, res, next) => {
 
 exports.getSaltById = async (req, res, next) => {
   const uid = req.params.uid;
-  console.log(token, uid);
   try {
     const user = await User.findOne({
       where: {
