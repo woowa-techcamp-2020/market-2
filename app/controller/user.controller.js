@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../model/user";
 import logger from "../../config/logger";
-import { encryptoPassword } from "../middleware/encrypto";
 
 const isVerifyToken = (token, req, res, respond) => {
   // create a promise that decodes the token
@@ -77,8 +76,25 @@ exports.login = async (req, res, next) => {
         delete user.password;
         delete user.salt;
 
+        const token = await new Promise((resolve, reject) => {
+          jwt.sign(
+            user.dataValues,
+            secret,
+            {
+              expiresIn: "2h",
+              subject: "userInfo",
+            },
+            (err, token) => {
+              if (err) reject(err);
+              resolve(token);
+            }
+          );
+        });
+
         return res.status(200).json({
           status: 200,
+          message: "logged in successfully",
+          token: token,
           result: user,
         });
       }

@@ -1,9 +1,11 @@
 extends ../layout/index
 
+
+
 mixin row(item= {})
   .row
     span.label= item.label
-    sapn= item.value
+    sapn.val= item.value
 
 block styles
   link(rel='stylesheet' href='./css/register_comp.css')
@@ -12,16 +14,25 @@ block content
   .wrap
     p.title 회원이 되셨습니다.
     a(href="/").base_color.go_main 메인으로 &#8594;
+    //- p.dataBundle #{fullName}
     .user_info
       -
-        var list = [
-          {id: 'name', label:'이름', value: '윤지수'},
-          {id: 'id', label:'아이디', value: 'crongro'},
-          {id: 'email', label:'이메일', value: 'a@aaa.com'},
-          {id: 'phone', label:'휴대폰', value: '01012345678'}
+        const list = [
+          {id: 'fullname', label:'이름', value: 'fullName'},
+          {id: 'uid', label:'아이디', value: 'uid'},
+          {id: 'email', label:'이메일', value: 'email'},
+          {id: 'phone', label:'휴대폰', value: 'phone'}
           ]
+
+          //- list[0].value = #{fullName}
+          //- list[1].value = #{uid};
+          //- list[2].value = #{email};
+          //- list[3].value = #{phone};
       each item in list
         +row(item)
     .line_text
       span.text
         != "&#8226; 위 내용은 <a href='/'>내 정보 관리</a>에서 수정하실 수 있습니다."
+
+block scripts
+  script(type="module" src="./js/register_comp.js")
