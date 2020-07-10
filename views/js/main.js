@@ -1,30 +1,28 @@
-// const validation = require("./validation");
-// const { IdCheck, PasswordCheck, NameCheck } = validation;
-import { IdCheck, PasswordCheck, NameCheck } from "./validation.js";
-
 const goPageActions = (url) => {
   location.href = url;
   console.log("go page" + url);
 };
 
 const main = () => {
-  //   IdCheck(";13dfd$"); // false
-  // IdCheck('12asv'); // true
-  // IdCheck('12asv_-'); // true
-
-  // PasswordCheck(';13dfd$'); // false
-  // PasswordCheck('fd123123'); // true
-
-  // NameCheck(';13dfd$');
-  // NameCheck('이름');
-  // NameCheck('이름123');
-  // NameCheck('이름aaa');
-
   const goLoginbtn = document.querySelector("#go_login");
   goLoginbtn.addEventListener("click", () => goPageActions("/login"));
 
   const goRegisterbtn = document.querySelector("#go_register");
   goRegisterbtn.addEventListener("click", () => goPageActions("/register"));
+
+  const rightElement = document.querySelector(".right");
+
+  const h2Text = document.querySelector("h2");
+  const fullname = localStorage.getItem("fullname");
+  if (fullname) {
+    h2Text.innerText = `${fullname}님 환영합니다!`;
+    goLoginbtn.style.display = "none";
+    rightElement.style.display = "none";
+  } else {
+    h2Text.innerText = "사장님, 로그인해주세요!";
+    goLoginbtn.style.display = "inline-block";
+    rightElement.style.display = "flex";
+  }
 };
 
 main();

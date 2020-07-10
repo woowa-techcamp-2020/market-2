@@ -1,3 +1,5 @@
+import { alreadyRegisterId, registerAccount } from "./apis/index.js";
+
 const showPopUp = (title, contents) => {
   const popup = document.querySelector("#popup");
   const closeBtn = popup.querySelector(".close");
@@ -59,9 +61,6 @@ let timer;
     // 휴대폰 자리수 확인
     if (phone.value.length >= 10) {
       const phoneVerification = document.querySelector("#phoneVerification");
-      const phoneVerificationBox = document.querySelector(
-        "#phoneVerificationBox"
-      );
       showPopUp(
         "인증번호를 발송했습니다.",
         "휴대폰 SMS 발송된 인증번호를 확인해 주세요."
@@ -69,9 +68,10 @@ let timer;
       const phoneVerificationSubmit = phoneVerification.getElementsByTagName(
         "button"
       )[0];
-      phoneVerificationBox.disabled = false;
       phoneVerification.style.display = "flex";
       phoneSubmit.textContent = "재전송";
+      // 팝업 내용 추가
+      popup.style.display = "block";
 
       let time = 120;
       if (timer) clearInterval(timer);
@@ -89,20 +89,6 @@ let timer;
           time--;
         }
       }, 1000);
-      phoneVerificationSubmit.addEventListener("click", () => {
-        // 인증 되었습니다.
-        if (phoneVerificationBox.value) {
-          phoneVerification.style.display = "none";
-          phoneSubmit.disabled = true;
-          phoneSubmit.textContent = "인증완료";
-          clearInterval(timer);
-        } else {
-          showPopUp(
-            "휴대폰 인증",
-            "휴대폰으로 받으신 인증번호를 입력해 주세요."
-          );
-        }
-      });
     }
   });
 })();
@@ -158,71 +144,10 @@ const showFindAddress = () => {
   element_layer_out.style.display = "block";
 };
 
-const registerActioins = () => {
-  // document.myForm.action = "/register_comp.pug";
-  // document.myForm.method = "post";
-  // document.myForm.submit();
-
-  // 유효성 체크
-  const form = document.forms["register"];
-  const form_inputs = form.querySelectorAll(".input");
-  const phone_Certifi = document.querySelector("#phoneVerificationBox");
-  const check = document.querySelector("#mustAgree");
-  // console.log(form_inputs);
-  // console.log(check.checked);
-
-  // TODO 아이디 중복 확인 체크
-
-  // 필수값(input:text) 확인
-  const showInput = [...form_inputs].filter((ele) => !ele.disabled);
-  // console.log(showInput);
-  for (let i = 0; i < showInput.length; i++) {
-    if (!showInput[i].value) {
-      showInput[i].focus();
-      showInput[i].blur();
-    }
-  }
-
-  for (let i = 0; i < showInput.length; i++) {
-    if (!showInput[i].value) {
-      showInput[i].focus();
-      return false;
-    }
-  }
-
-  // TODO 인증번호 필수값
-  if (!phone_Certifi.value) {
-    // TODO 필수 사항 체크 안내 팝업 띄우기
-    showPopUp(
-      "휴대폰 인증",
-      "입력하신 휴대폰에 인증번호를 받아 인증번호를 입력해 주세요."
-    );
-    return false;
-  }
-
-  if (!check.checked) {
-    // TODO 필수 사항 체크 안내 팝업 띄우기
-    showPopUp("필수 항목 확인", "회원가입을 위해 필수 항목에 동의해주세요.");
-    return;
-  }
-
-  // TODO 회원가입 api 호출
-  const res = true;
-  if (res) {
-    // TODO 회원가입 성공하면 회원 정보 받아와서 register_comp 페이지에 넘겨주기
-    location.href = "/register_comp";
-  }
-
-  return true;
-};
-
 (function activateAddressFormChangeEvent() {
   const addressCheckBox = document.querySelector("#addressCheckBox");
   const addressElements = document.querySelectorAll(".addressElements");
   if (!(addressCheckBox || addressElements.length)) return;
-
-  const registerForm = document.querySelector("#register");
-  registerForm.addEventListener("submit", registerActioins);
 
   addressCheckBox.addEventListener("change", () => {
     if (addressCheckBox.checked) {
@@ -265,6 +190,98 @@ const registerActioins = () => {
     } else {
       parentAgreement.checked = false;
     }
+  });
+})();
+
+(async function registerActioins() {
+  const registerForm = document.querySelector("#regBtn");
+  registerForm.addEventListener("click", () => {
+    // 유효성 체크
+    const form = document.forms["register"];
+    const form_inputs = form.querySelectorAll(".input");
+    const check = document.querySelector("#mustAgree");
+    const advertiseAgree = document.querySelector("#adAgree");
+    const addressCheckBox = document.querySelector("#addressCheckBox");
+
+    const data = {
+      uid: form_inputs[0].value,
+      password: form_inputs[1].value,
+      confirm: form_inputs[2].value,
+      email: form_inputs[3].value + "@" + form_inputs[4].value,
+      fullName: form_inputs[5].value,
+      phone: form_inputs[6].value,
+      address: form_inputs[9].value + " " + form_inputs[10].value,
+      advertiseAgree: advertiseAgree.checked,
+    };
+
+    alreadyRegisterId(data.uid).then((isDup) => {
+      if (isDup) {
+        form_inputs[0].focus();
+        form_inputs[0].blur();
+        return false;
+      }
+      // form 태그 안에 input:text validation error 검사
+      // filter 사용해서 disabled 제거
+      for (let i = 0; i < form_inputs.length; i++) {
+        if (!form_inputs[i].value) {
+          if (addressCheckBox.checked) {
+            form_inputs[i].focus();
+            form_inputs[i].blur();
+          } else {
+            if (!form_inputs[i].classList.contains("addressElements")) {
+              form_inputs[i].focus();
+              form_inputs[i].blur();
+            }
+          }
+        }
+      }
+
+      // validation error 첫번째 요소 focus
+      for (let i = 0; i < form_inputs.length; i++) {
+        if (!form_inputs[i].value) {
+          if (addressCheckBox.checked) {
+            form_inputs[i].focus();
+            return false;
+          } else {
+            if (!form_inputs[i].classList.contains("addressElements")) {
+              form_inputs[i].focus();
+              return false;
+            }
+          }
+        }
+      }
+
+      if (!check.checked) {
+        showPopUp(
+          "필수 항목 확인",
+          "회원가입을 위해 필수 항목에 동의해주세요."
+        );
+        return false;
+      }
+
+      // data.salt = createSalt();
+      // fetch("/api/users", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(data),
+      // });
+
+      //re
+
+      registerAccount(data).then((res) => {
+        if (res.status === 201) {
+          localStorage["fullname"] = res.result.fullName;
+          localStorage["uid"] = res.result.uid;
+          localStorage["email"] = res.result.email;
+          localStorage["phone"] = res.result.phone;
+          location.href("/register_comp");
+        } else {
+          console.log("Error fail to create user");
+        }
+      });
+    });
   });
 })();
 
