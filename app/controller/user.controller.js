@@ -150,7 +150,6 @@ exports.getAll = async (req, res, next) => {
 };
 
 exports.getSaltById = async (req, res, next) => {
-  const token = req.headers["x-access-token"] || req.query.token;
   const uid = req.params.uid;
   console.log(token, uid);
   try {
@@ -166,16 +165,7 @@ exports.getSaltById = async (req, res, next) => {
       };
       next(err);
     } else {
-      // if token is valid, it will respond with its info
-      const respond = (token) => {
-        res.status(200).json({
-          success: true,
-          salt: token.salt,
-        });
-      };
-
-      isVerifyToken(token, req, res, respond);
-      // res.status(200).json({ salt: user.salt });
+      res.status(200).json({ salt: user.salt });
     }
   } catch (err) {
     logger.error("500 // method getSaltById of user.controller");
