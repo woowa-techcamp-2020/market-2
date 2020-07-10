@@ -28,7 +28,7 @@ export const registerAccount = async (data) => {
 export const alreadyRegisterId = async (uid) => {
   try {
     const response = await fetch(`${ID_CHECK.url}/${uid}`);
-    if (response.status === 200 || response.status === 301) {
+    if (response.status === 200 || response.status === 304) {
       return (await response.json()).result;
     } else {
       console.log("Error, status code: " + response.status);
