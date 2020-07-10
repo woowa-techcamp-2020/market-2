@@ -9,7 +9,14 @@ exports.signup = async (req, res, next) => {
       delete body.confirm;
       const user = await User.create(body);
 
-      return res.status(200).json(user);
+      // return res.render("html/page/register_comp", {
+      //   fullName: user.fullName,
+      //   uid: user.uid,
+      //   email: user.email,
+      //   phone: user.phone,
+      // });
+
+      return res.status(201).json({ status: 201, result: user });
     } catch (err) {
       console.log("err", err);
       logger.error("500 // method signup of user.controller");
@@ -43,26 +50,29 @@ exports.login = async (req, res, next) => {
         return next(err);
       }
 
-      const hashedPassword = await encryptoPassword(user.password, user.salt);
-      if (hashedPassword === password) {
+      if (user.password === password) {
         delete user.password;
         delete user.salt;
-        return res.status(200).json(user);
+
+        return res.status(200).json({
+          status: 200,
+          result: user,
+        });
       }
 
-      const err = {
+      const cErr = {
         message: "Bad Request: password wrong",
         code: "PasswordWrong",
       };
       logger.error("password wrong // method login of user.controller");
-      return next(customErr);
+      return next(cErr);
     } catch (err) {
       logger.error("500 // method login of user.controller");
       next(err);
     }
   }
 
-  customErr = {
+  const customErr = {
     message: "Bad Request: Email or password is null",
     code: "BadRequest",
   };
@@ -92,11 +102,6 @@ exports.existsById = async (req, res, next) => {
 exports.getAll = async (req, res, next) => {
   try {
     const users = await User.findAll();
-    users.map((user) => {
-      delete user.password;
-      delete user.salt;
-      return user;
-    });
     return res.status(200).json(users);
   } catch (err) {
     logger.error("500 // meethod getAll of user.controller");
