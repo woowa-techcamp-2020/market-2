@@ -57,6 +57,9 @@ const dbService = (environment, migrate) => {
       case "development":
         await startDev();
         break;
+      case "production":
+        await startDev();
+        break;
       default:
         await wrongEnvironment();
     }
