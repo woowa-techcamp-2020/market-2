@@ -3,6 +3,27 @@ import User from "../model/user";
 import logger from "../../config/logger";
 import { encryptoPassword } from "../middleware/encrypto";
 
+const isVerifyToken = (token, req, res, respond) => {
+  // create a promise that decodes the token
+  const p = new Promise((resolve, reject) => {
+    jwt.verify(token, req.app.get("jwt-secret"), (err, decoded) => {
+      if (err) reject(err);
+      resolve(decoded);
+    });
+  });
+
+  // if it has failed to verify, it will return an error message
+  const onError = (error) => {
+    res.status(403).json({
+      success: false,
+      message: error.message,
+    });
+  };
+
+  // return
+  p.then(respond).catch(onError);
+};
+
 exports.signup = async (req, res, next) => {
   const { body } = req;
   if (body.password === body.confirm) {

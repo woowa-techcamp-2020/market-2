@@ -37,6 +37,6 @@ router.get("/dup/:uid", users.existsById);
  * get: /api/user/salt/:uid
  * response { salt: 29043 }
  */
-router.get("/dup/:uid", users.getSaltById);
+router.get("/salt/:uid", users.getSaltById);
 
 module.exports = router;
