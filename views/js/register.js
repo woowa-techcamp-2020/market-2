@@ -1,5 +1,4 @@
-import { registerAccount } from "./apis/index.js";
-import { createSalt } from "./encrypto.js";
+import { alreadyRegisterId, registerAccount } from "./apis/index.js";
 
 const showPopUp = (title, contents) => {
   const popup = document.querySelector("#popup");
@@ -194,7 +193,7 @@ const showFindAddress = () => {
   });
 })();
 
-(function registerActioins() {
+(async function registerActioins() {
   const registerForm = document.querySelector("#regBtn");
   registerForm.addEventListener("click", () => {
     // 유효성 체크
@@ -215,63 +214,73 @@ const showFindAddress = () => {
       advertiseAgree: advertiseAgree.checked,
     };
 
-    // form 태그 안에 input:text validation error 검사
-    // filter 사용해서 disabled 제거
-    for (let i = 0; i < form_inputs.length; i++) {
-      if (!form_inputs[i].value) {
-        if (addressCheckBox.checked) {
-          form_inputs[i].focus();
-          form_inputs[i].blur();
-        } else {
-          if (!form_inputs[i].classList.contains("addressElements")) {
+    alreadyRegisterId(data.uid).then((isDup) => {
+      if (isDup) {
+        form_inputs[0].focus();
+        form_inputs[0].blur();
+        return false;
+      }
+      // form 태그 안에 input:text validation error 검사
+      // filter 사용해서 disabled 제거
+      for (let i = 0; i < form_inputs.length; i++) {
+        if (!form_inputs[i].value) {
+          if (addressCheckBox.checked) {
             form_inputs[i].focus();
             form_inputs[i].blur();
+          } else {
+            if (!form_inputs[i].classList.contains("addressElements")) {
+              form_inputs[i].focus();
+              form_inputs[i].blur();
+            }
           }
         }
       }
-    }
 
-    // validation error 첫번째 요소 focus
-    for (let i = 0; i < form_inputs.length; i++) {
-      if (!form_inputs[i].value) {
-        if (addressCheckBox.checked) {
-          form_inputs[i].focus();
-          return false;
-        } else {
-          if (!form_inputs[i].classList.contains("addressElements")) {
+      // validation error 첫번째 요소 focus
+      for (let i = 0; i < form_inputs.length; i++) {
+        if (!form_inputs[i].value) {
+          if (addressCheckBox.checked) {
             form_inputs[i].focus();
             return false;
+          } else {
+            if (!form_inputs[i].classList.contains("addressElements")) {
+              form_inputs[i].focus();
+              return false;
+            }
           }
         }
       }
-    }
 
-    if (!check.checked) {
-      showPopUp("필수 항목 확인", "회원가입을 위해 필수 항목에 동의해주세요.");
-      return false;
-    }
-
-    // data.salt = createSalt();
-    // fetch("/api/users", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(data),
-    // });
-
-    //re
-
-    registerAccount(data).then((res) => {
-      if (res.status === 201) {
-        localStorage["fullname"] = res.result.fullName;
-        localStorage["uid"] = res.result.uid;
-        localStorage["email"] = res.result.email;
-        localStorage["phone"] = res.result.phone;
-        location.href("/register_comp");
-      } else {
-        console.log("Error fail to create user");
+      if (!check.checked) {
+        showPopUp(
+          "필수 항목 확인",
+          "회원가입을 위해 필수 항목에 동의해주세요."
+        );
+        return false;
       }
+
+      // data.salt = createSalt();
+      // fetch("/api/users", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(data),
+      // });
+
+      //re
+
+      registerAccount(data).then((res) => {
+        if (res.status === 201) {
+          localStorage["fullname"] = res.result.fullName;
+          localStorage["uid"] = res.result.uid;
+          localStorage["email"] = res.result.email;
+          localStorage["phone"] = res.result.phone;
+          location.href("/register_comp");
+        } else {
+          console.log("Error fail to create user");
+        }
+      });
     });
   });
 })();
