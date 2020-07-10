@@ -1,46 +1,79 @@
-import { REGISTER, LOGIN, ID_CHECK, USER_LIST } from "./endpoints.js";
+import { REGISTER, LOGIN, ID_CHECK, USER_LIST, GET_SALT } from "./endpoints.js";
 import { encryptoPassword, createSalt } from "../encrypto.js";
-const xhr = new XMLHttpRequest();
 
-export const register = (data) => {
-  xhr.open(REGISTER.method, REGISTER.url);
-  xhr.setRequestHeader("Content-type", REGISTER.type);
-  data.mySalt = createSalt();
-  data.password = encryptoPassword(data.password, data.mySalt);
-  data.confirm = encryptoPassword(data.confirm, data.mySalt);
+export const registerAccount = async (data) => {
+  data.salt = createSalt();
+  data.password = await encryptoPassword(data.password, data.salt);
+  data.confirm = await encryptoPassword(data.confirm, data.salt);
 
-  xhr.send(JSON.stringify(data));
-
-  xhr.onreadystatechange = async (e) => {
-    if (xhr.readyState !== XMLHttpRequest.DONE) return;
-
-    if (xhr.status === 201) {
-      // 201: Created
-      console.log(xhr.responseText);
+  try {
+    const response = await fetch(REGISTER.url, {
+      method: REGISTER.method,
+      headers: {
+        "Content-Type": REGISTER.type,
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.status === 201) {
+      return await response.json();
     } else {
-      console.log("Error!");
+      console.log("Error: ", await response.json());
     }
-  };
-  return xhr;
+  } catch (err) {
+    console.log("Error!!");
+    return;
+  }
 };
 
-export const idCheck = async (uid) => {
-  xhr.open(ID_CHECK.method, `${ID_CHECK.url}/${uid}`);
-  xhr.send();
-
-  xhr.onreadystatechange = (e) => {
-    if (xhr.readyState !== XMLHttpRequest.DONE) return;
-
-    if (xhr.status === 200) {
-      const response = JSON.parse(xhr.response);
-      return response.result;
+export const alreadyRegisterId = async (uid) => {
+  try {
+    const response = await fetch(`${ID_CHECK.url}/${uid}`);
+    if (response.status === 200 || response.status === 301) {
+      return (await response.json()).result;
     } else {
-      console.log("Error!");
+      console.log("Error, status code: " + response.status);
       return true;
     }
-  };
+  } catch (err) {
+    console.log("Error!!");
+    return true;
+  }
 };
 
-export const login = (data) => {
-  return xhr;
+export const login = async (data) => {
+  const salt = await getUserSalt(data.uid);
+  data.password = await encryptoPassword(data.password, salt);
+  console.log(salt, data);
+
+  try {
+    const response = await fetch(LOGIN.url, {
+      method: LOGIN.method,
+      headers: {
+        "Content-Type": LOGIN.type,
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.status === 200 || response.status === 304) {
+      return await response.json();
+    } else {
+      console.log("Error: ", await response.json());
+    }
+  } catch (err) {
+    console.log("Error!!");
+    return;
+  }
+};
+
+const getUserSalt = async (uid) => {
+  try {
+    const response = await fetch(`${GET_SALT.url}/${uid}`);
+    if (response.status === 200 || response.status === 304) {
+      return (await response.json()).salt;
+    } else {
+      console.log("Error: ", await response.json());
+    }
+  } catch (err) {
+    console.log("Error!!");
+    return;
+  }
 };

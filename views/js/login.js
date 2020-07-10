@@ -1,10 +1,9 @@
-import { idCheck, register } from "./apis/index.js";
+import { login, registerAccount } from "./apis/index.js";
 const goPageActions = (url) => {
   location.href = url;
-  console.log("go page" + url);
 };
 
-const loginActions = () => {
+const loginActions = async () => {
   const form = document.forms["login"];
   const form_inputs = form.querySelectorAll(".input");
   //   console.log(form, form_inputs);
@@ -26,13 +25,15 @@ const loginActions = () => {
   }
 
   // 로그인 api 호출
-  const res = true;
-  if (res) {
-    // TODO 로그인 성공하면 이름 받아와서 main페이지에 넘겨주기
+  const data = {
+    uid: form_inputs[0].value,
+    password: form_inputs[1].value,
+  };
+  const res = await login(data);
+  if (res.status === 200 || res.status === 304) {
+    localStorage.setItem("fullname", res.result.fullName);
     goPageActions("/");
   }
-
-  return true;
 };
 
 const loadIdActions = () => {
@@ -64,22 +65,19 @@ const init = async () => {
 
   loadIdActions();
 
-  const data = {
-    uid: "loloarla",
-    email: "siosio34@nate.com",
-    password: "qwer1@3$",
-    conirm: "qwer1@3$",
-    fullName: "이종구",
-    phone: "010-9924-2316",
-    address: "동탄순환대로17길31",
-    advertiseAgree: true,
-  };
+  // const data = {
+  //   uid: "loloarla",
+  //   email: "siosio34@nate.com",
+  //   password: "qwer1@3$",
+  //   conirm: "qwer1@3$",
+  //   fullName: "이종구",
+  //   phone: "010-9924-2316",
+  //   address: "동탄순환대로17길31",
+  //   advertiseAgree: true,
+  // };
 
-  const regi = await register(data);
-  console.log(regi);
-
-  // const idCheckkk = await idCheck("loloara");
-  // console.log(idCheckkk);
+  // const regi = await register(data);
+  // console.log(regi);
 
   const goRegisterbtn = document.querySelector("#go_register");
   goRegisterbtn.addEventListener("click", () => goPageActions("/register"));

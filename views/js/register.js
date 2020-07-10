@@ -1,4 +1,5 @@
-import { register, idCheck } from "./apis/index.js";
+import { registerAccount } from "./apis/index.js";
+import { createSalt } from "./encrypto.js";
 
 const showPopUp = (title, contents) => {
   const popup = document.querySelector("#popup");
@@ -208,17 +209,11 @@ const showFindAddress = () => {
       password: form_inputs[1].value,
       confirm: form_inputs[2].value,
       email: form_inputs[3].value + "@" + form_inputs[4].value,
-      phone: form_inputs[5].value,
-      address: form_inputs[8].value + " " + form_inputs[9].value,
+      fullName: form_inputs[5].value,
+      phone: form_inputs[6].value,
+      address: form_inputs[9].value + " " + form_inputs[10].value,
       advertiseAgree: advertiseAgree.checked,
     };
-
-    // TODO 아이디 중복 확인 체크
-    if (idCheck(data.uid)) {
-      form_inputs[0].focus();
-      form_inputs[0].blur();
-      return false;
-    }
 
     // form 태그 안에 input:text validation error 검사
     // filter 사용해서 disabled 제거
@@ -251,22 +246,33 @@ const showFindAddress = () => {
       }
     }
 
-    // TODO 인증번호 필수값
-
     if (!check.checked) {
-      // TODO 필수 사항 체크 안내 팝업 띄우기
       showPopUp("필수 항목 확인", "회원가입을 위해 필수 항목에 동의해주세요.");
       return false;
     }
 
-    // TODO 회원가입 api 호출
-    const res = true;
-    if (res) {
-      // TODO 회원가입 성공하면 회원 정보 받아와서 register_comp 페이지에 넘겨주기
-      location.href = "/register_comp";
-    }
+    // data.salt = createSalt();
+    // fetch("/api/users", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // });
 
-    return true;
+    //re
+
+    registerAccount(data).then((res) => {
+      if (res.status === 201) {
+        localStorage["fullname"] = res.result.fullName;
+        localStorage["uid"] = res.result.uid;
+        localStorage["email"] = res.result.email;
+        localStorage["phone"] = res.result.phone;
+        location.href("/register_comp");
+      } else {
+        console.log("Error fail to create user");
+      }
+    });
   });
 })();
 

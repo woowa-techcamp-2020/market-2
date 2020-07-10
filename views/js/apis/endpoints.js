@@ -21,3 +21,8 @@ export const USER_LIST = {
   method: "GET",
   type: "application/json",
 };
+export const GET_SALT = {
+  url: `${BASE_URL}/salt`,
+  method: "GET",
+  type: "application/json",
+};

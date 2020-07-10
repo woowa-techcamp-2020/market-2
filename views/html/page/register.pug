@@ -13,14 +13,15 @@ block content
     
     .emailForm
       +inputText('text','email','이메일 앞자리*')
-      //- input#emailIdInputBox(type="text", name="emailId", value="", placeholder="이메일 앞자리*")
       p @ 
       +inputText('text','emailDomain','이메일 뒷자리*','', false, false, true)
-      //- input#emailDomainInputBox(type="text", name="emailDomain", value="", placeholder="이메일 뒷자리*", disabled)
+
     select#emailSelector
       each val in Emails
         option=val
     
+    +inputText('text', 'fullname', '이름*','',false,false,false,2,10)
+
     .inputButton#phoneNumber
       +inputText('tel','phone','휴대폰*','',false,false,false,0,12,true)
       button.btn_small#phoneSubmit(type= 'button') 인증받기
