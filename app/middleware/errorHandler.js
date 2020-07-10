@@ -9,9 +9,11 @@ const handleNotFoundError = (req, res, next) => {
     result: "ERROR",
     code: "NotFound",
     message: req.url + " not found",
-  };
+  }; // 404 처리 부분
 
-  res.status(httpStatus.NOT_FOUND).json(response);
+  res.status(httpStatus.NOT_FOUND).redirect("/not_found").json(response);
+
+  // res.status(httpStatus.NOT_FOUND).json(response);
 };
 
 const handleAssertionError = (err, req, res, next) => {
