@@ -56,11 +56,13 @@ let timer;
     "keyup",
     () => (phoneSubmit.disabled = phone.value ? false : true)
   );
-
   phoneSubmit.addEventListener("click", () => {
     // 휴대폰 자리수 확인
     if (phone.value.length >= 10) {
       const phoneVerification = document.querySelector("#phoneVerification");
+      const phoneVerificationBox = document.querySelector(
+        "#phoneVerificationBox"
+      );
       showPopUp(
         "인증번호를 발송했습니다.",
         "휴대폰 SMS 발송된 인증번호를 확인해 주세요."
@@ -68,6 +70,7 @@ let timer;
       const phoneVerificationSubmit = phoneVerification.getElementsByTagName(
         "button"
       )[0];
+      phoneVerificationBox.disabled = false;
       phoneVerification.style.display = "flex";
       phoneSubmit.textContent = "재전송";
       // 팝업 내용 추가
@@ -89,6 +92,20 @@ let timer;
           time--;
         }
       }, 1000);
+      phoneVerificationSubmit.addEventListener("click", () => {
+        // 인증 되었습니다.
+        if (phoneVerificationBox.value) {
+          phoneVerification.style.display = "none";
+          phoneSubmit.disabled = true;
+          phoneSubmit.textContent = "인증완료";
+          clearInterval(timer);
+        } else {
+          showPopUp(
+            "휴대폰 인증",
+            "휴대폰으로 받으신 인증번호를 입력해 주세요."
+          );
+        }
+      });
     }
   });
 })();
@@ -276,7 +293,7 @@ const showFindAddress = () => {
           localStorage["uid"] = res.result.uid;
           localStorage["email"] = res.result.email;
           localStorage["phone"] = res.result.phone;
-          location.href("/register_comp");
+          location.href = "/register_comp";
         } else {
           console.log("Error fail to create user");
         }
