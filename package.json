@@ -1,37 +1,39 @@
 {
   "name": "market-2",
-  "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "helmet": "^3.23.3",
+    "http-status": "^1.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "method-override": "^3.0.0",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "path": "^0.12.7",
     "pug": "^3.0.0",
-    "trim-request": "^1.0.6"
+    "sequelize": "^6.3.0",
+    "sqlite3": "^5.0.0",
+    "trim-request": "^1.0.6",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
     "nodemon": "^2.0.4"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js --config nodemon.json"
+    "start": "nodemon --exec babel-node server.js --presets=es2015 --config nodemon.json"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/woowa-techcamp-2020/market-2.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/woowa-techcamp-2020/market-2/issues"
-  },
-  "homepage": "https://github.com/woowa-techcamp-2020/market-2#readme"
+  }
 }

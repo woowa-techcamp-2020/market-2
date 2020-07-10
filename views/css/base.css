@@ -1,0 +1,340 @@
+body {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  font-family: "Do Hyeon", sans-serif;
+  overflow-y: auto;
+}
+
+.layout {
+  margin: 0 auto;
+  width: 500px;
+  /* height: 100%; */
+  overflow-y: auto;
+  /* border: 1px solid #000; */
+  box-sizing: border-box;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+}
+
+header {
+  width: 100%;
+  text-align: center;
+}
+
+footer {
+  width: 100%;
+  text-align: center;
+}
+
+.content {
+  width: 100%;
+  /* height: 100%; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.base_color {
+  color: #197cfe;
+}
+
+.err_color {
+  color: red;
+}
+
+.grey {
+  color: #d7d7d7;
+}
+
+/* input text style */
+.input_layer {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  height: 45px;
+  border: 1px solid #d7d7d7;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  font-size: 15px;
+  padding: 5px 10px;
+}
+
+input::placeholder {
+  color: #bbc0cd;
+}
+
+input:focus {
+  outline: 0;
+}
+
+input:disabled {
+  color: #8e929f !important;
+  -webkit-text-fill-color: #8e929f !important;
+  background-color: #fff;
+}
+
+.input_err {
+  border-color: red;
+  color: red;
+}
+
+.input_msg {
+  display: none;
+  margin: 0;
+  margin-bottom: 15px;
+  font-size: 12px;
+}
+
+.input_msg_comp {
+  display: block;
+  color: #b5b5b5;
+}
+
+.input_msg_err {
+  display: block;
+  color: red;
+}
+
+/* select box style */
+select {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #d7d7d7;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+/* button style */
+button {
+  /* width: 100%;
+  height: 60px;
+  background-color: #197cfe;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 10px;
+  border: 0; */
+  white-space: nowrap;
+}
+
+.btn_primary {
+  width: 100%;
+  height: 60px;
+  background-color: #197cfe;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 10px;
+  border: 0;
+}
+
+.btn_small {
+  width: 98px;
+  height: 45px;
+  font-size: 15px;
+  border: 1px solid #1a7cff;
+  color: #1a7cff;
+  background-color: #fff;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+button:disabled {
+  border: 1px solid #ccc;
+  color: #bbc0cd;
+  background-color: #fff;
+}
+
+/* checkbox style */
+input[type="checkbox"] {
+  /* 실제 체크박스는 화면에서 숨김 */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+input[type="checkbox"] + label {
+  display: inline-block;
+  position: relative;
+  padding-left: 35px; /* 글자와 체크박스 사이의 간격을 변경 */
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+input[type="checkbox"] + label:before {
+  /* 가짜 체크박스 */
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -4px; /* 이 값을 변경해서 글자와의 정렬 */
+  width: 21px; /* 체크박스의 너비를 지정 */
+  height: 21px; /* 체크박스의 높이를 지정 */
+  line-height: 21px; /* 세로정렬을 위해 높이값과 일치 */
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #d7d7d7;
+  border-radius: 3px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+}
+input[type="checkbox"] + label:active:before,
+input[type="checkbox"]:checked + label:active:before {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type="checkbox"]:checked + label:before {
+  /* 체크박스를 체크했을때 */
+  content: "\2713"; /* 체크표시 유니코드 사용 */
+  color: #fff;
+  text-shadow: 1px 1px #fff;
+  background: #197cfe;
+  border-color: #197cfe;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05),
+    inset 15px 10px -12px rgba(255, 255, 255, 0.1);
+}
+
+/* label style */
+label {
+  font-size: 15px;
+}
+
+/* line 정리 css */
+.row {
+  display: flex;
+}
+
+.right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.right p {
+  margin: 0 5px;
+  color: #9c9c9c;
+  font-size: 14px;
+}
+
+/* mouse pointer class */
+.click {
+  cursor: pointer;
+}
+
+.click:hover {
+  text-decoration: underline;
+}
+
+/* 주소 검색 모달창 */
+.layer_out {
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  z-index: 1;
+  -webkit-overflow-scrolling: touch;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.layer_in {
+  /* width: 300px; */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.layer_header {
+  display: flex;
+  background-color: #1a7cff;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  color: #fff;
+}
+
+#layer {
+  width: 400px;
+  height: 470px;
+}
+
+#btnCloseLayer {
+  cursor: pointer;
+  right: -3px;
+  top: -3px;
+  z-index: 1;
+}
+
+/* 팝업창 */
+
+#popup {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup-layout {
+  background-color: #fefefe;
+  border: 1px solid #888;
+  width: 40%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popup-content {
+  width: 100%;
+  padding: 27px 25px 35px;
+  box-sizing: border-box;
+}
+
+.popup-content p {
+  margin: 0;
+  line-height: 25px;
+}
+
+.popup-content .popup-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.popup-footer {
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid #979797;
+  padding: 14px 0 13px;
+}
+
+.close {
+  font-size: 16px;
+}
+
+.close:hover,
+.close:focus {
+  color: gray;
+  text-decoration: none;
+  cursor: pointer;
+}

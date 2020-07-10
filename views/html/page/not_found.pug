@@ -1,0 +1,16 @@
+doctype html
+html(lang='en')
+  head
+    title 배민사장님광장
+    meta(charset='utf-8')
+    link(rel="shortcut icon", href="../images/favicon.ico", type="image/x-icon")
+    link(rel='stylesheet' href='../css/base.css')
+    link(rel='stylesheet' href='../css/error.css')
+  body
+    div.layout.err_layout
+      img(src="../images/error.png", alt="error")
+      h1.text Page Not Found
+      p 요청하신 페이지를 찾을 수 없습니다.
+      p 입력하신 주소가 정확한지 확인 후 다시 시도해주세요.
+      a(href="/").base_color.go_main 메인으로 이동하기 &#9968;
+      
